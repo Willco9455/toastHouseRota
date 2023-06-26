@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pressable } from "react-native";
-import { addUserToDay, getEmployees } from "../util/dbHandler";
+import { addUserToDay, getEmployees, writeShift } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 
 let employees = getEmployees();
 
 export default function AddPersonModal(props) {
+
 	function addUserToDayHandler(id) {
-		addUserToDay(id, props.date.item, props.am)
+		addUserToDay(props.am, props.date.item, id)
 		props.reloadDay()
 	}
 

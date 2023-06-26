@@ -3,10 +3,10 @@ import { deleteRecordById, getUserColorById } from "../util/dbHandler";
 import SmallButton from "./SmallButton";
 
 export default function PersonCard({ relaodDay, personData, editing, recordId }) { //personData is the userObject(id, name, color)
-  
   let color = getUserColorById(personData.id)
-  function onDeleteHandler() {
-    deleteRecordById(recordId);
+
+  async function onDeleteHandler() {
+    await deleteRecordById(recordId);
     relaodDay();
   }
   return (

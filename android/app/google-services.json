@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "322229090960",
+    "project_id": "toasthouserota-f486c",
+    "storage_bucket": "toasthouserota-f486c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322229090960:android:232cf1a0632f0fd98df615",
+        "android_client_info": {
+          "package_name": "com.squilliam9455.toastHouseRota"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322229090960-smgu7vldbeqcqgi69t981f7eqqnou06u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmhp-HsD-BgSvr2MXIt_cfIA2IvssETfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322229090960-smgu7vldbeqcqgi69t981f7eqqnou06u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
