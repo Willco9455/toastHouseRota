@@ -7,20 +7,18 @@ let employees = getEmployees();
 
 export default function AddPersonModal(props) {
 
-	function addUserToDayHandler(id) {
-		addUserToDay(props.am, props.date.item, id)
+	async function addUserToDayHandler(id) {
+		await addUserToDay(props.am, props.date.item, id)
 		props.reloadDay()
 	}
 
 	return (
-		<Modal st transparent={true} visible={props.visible} animationType="fade">
+		<Modal transparent={true} visible={props.visible} animationType="fade">
 			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}>
 				<View style={styles.container} >
 					<FlatList
 						data={employees}
-						renderItem={({ item }) => <Pressable onPress={() => addUserToDayHandler(item.id)} >
-							<PersonCard editing={false} personData={item} />
-						</Pressable>}
+						renderItem={({ item }) =><PersonCard onPress={() => addUserToDayHandler(item.id)} editing={false} personData={item} />}
 						keyExtractor={item => item.id}
 					/>
 					<Button onPress={props.onCancel} title="Cancel" />

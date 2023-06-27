@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, Pressable, FlatList } from "react-native";
-import { getPeopleFromDate, getUserById } from "../util/dbHandler";
+import { deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 import SmallButton from "./SmallButton";
 import AddPersonButton from "./AddPersonButton";
@@ -37,6 +37,13 @@ export default function DayCard({ date, editing }) {
 		showModalHandler();
 	}
 
+	async function onDayPressHandler(recordId) {
+    if (editing) {
+      await deleteRecordById(recordId);
+      reloadDay();
+    }
+  }
+
 	function showModalHandler() {
 		setShowModal(true);
 	}
@@ -56,14 +63,14 @@ export default function DayCard({ date, editing }) {
 					<View style={styles.amPeopleContainer}>
 						<FlatList
 							data={amPeople}
-							renderItem={({ item }) => <PersonCard relaodDay={reloadDay} recordId={item.id} editing={editing} personData={getUserById(item.userId)} />}
+							renderItem={({ item }) => <PersonCard onPress={() => onDayPressHandler(item.id)} relaodDay={reloadDay} editing={editing} personData={getUserById(item.userId)} />}
 							keyExtractor={item => item.id}
 						/>
 					</View>
 					<View style={styles.pmPeopleContainer}>
 						<FlatList
 							data={pmPeople}
-							renderItem={({ item }) => <PersonCard relaodDay={reloadDay} recordId={item.id} editing={editing} personData={getUserById(item.userId)} />}
+							renderItem={({ item }) => <PersonCard onPress={() => onDayPressHandler(item.id)} relaodDay={reloadDay} editing={editing} personData={getUserById(item.userId)} />}
 							keyExtractor={item => item.id}
 						/>
 					</View>
@@ -93,14 +100,15 @@ const styles = StyleSheet.create({
 	},
 	outerPeopleContainer: {
 		flexDirection: 'row',
-		marginTop: 10
+		marginTop: 10,
 	},
 	amPeopleContainer: {
 		flex: 1,
 		alignItems: 'center'
 	},
 	pmPeopleContainer: {
-		flex: 1
+		flex: 1,
+		alignItems: 'center'
 	},
 	dateContainer: {
 		flexDirection: 'row',

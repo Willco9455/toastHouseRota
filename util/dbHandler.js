@@ -3,6 +3,11 @@ import firestore from '@react-native-firebase/firestore';
 let users = []
 let db = []
 
+export function ClearLocalDb() {
+  users = [];
+  db = [];
+}
+
 // fetches all the users from the database
 export async function getUsers() {
   // return
@@ -87,16 +92,7 @@ export async function getShifts() {
 // ];
 
 export async function writeShift(am, date, userId) {
-  await firestore()
-    .collection('shifts')
-    .add({
-      am: am,
-      date: date,
-      userId: userId,
-    })
-    .then(() => {
-      console.log('User added!');
-    });
+
 }
 
 
@@ -122,12 +118,16 @@ export async function deleteRecordById(id) {
     .collection('shifts')
     .doc(id)
     .delete()
+    .catch((e) => {
+      console.log("ERROR HERE")
+      console.log(e)
+    })
     .then(() => {
+      db = db.filter(x => {
+        return !(x.id === id)
+      });
       console.log('User deleted!');
     });
-  db = db.filter(x => {
-    return !(x.id === id)
-  });
 }
 
 export function getUserColorById(id) {
@@ -143,12 +143,21 @@ export function getUserById(id) {
 }
 
 export async function addUserToDay(am, date, userId) {
-  writeShift(am, date, userId)
-  let newEntry = {
-    id: Math.floor(Math.random() * 10000),
-    userId: userId,
-    date: date,
-    am: am,
-  }
-  db.push(newEntry);
+  await firestore()
+    .collection('shifts')
+    .add({
+      am: am,
+      date: date,
+      userId: userId,
+    })
+    .then((docRef) => {
+      db.push({
+        id: docRef.id,
+        userId: userId,
+        date: date,
+        am: am,
+      });
+      console.log('User added!');
+    });
+  
 }

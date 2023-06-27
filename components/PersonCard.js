@@ -1,19 +1,18 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Pressable } from "react-native";
 import { deleteRecordById, getUserColorById } from "../util/dbHandler";
 import SmallButton from "./SmallButton";
 
-export default function PersonCard({ relaodDay, personData, editing, recordId }) { //personData is the userObject(id, name, color)
+export default function PersonCard({ relaodDay, personData, editing, recordId, onPress }) { //personData is the userObject(id, name, color)
   let color = getUserColorById(personData.id)
 
-  async function onDeleteHandler() {
-    await deleteRecordById(recordId);
-    relaodDay();
-  }
   return (
-    <View style={[styles.container, {backgroundColor: color}]}>
+    <Pressable onPress={onPress}
+      style={editing ?
+        [styles.container, { backgroundColor: color, opacity: 0.6 }] :
+        [styles.container, { backgroundColor: color }]
+      }>
       <Text style={styles.text}>{personData.name}</Text>
-      {editing ? <SmallButton onPress={onDeleteHandler}>X</SmallButton> : null}
-    </View>
+    </Pressable>
   );
 }
 
@@ -31,6 +30,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
+    elevation: 2,
+		shadowColor: 'black',
+		shadowOffset: { width: 0, height: 2 },
+		shadowRadius: 1,
+		shadowOpacity: 0.20,
   },
 
 })
