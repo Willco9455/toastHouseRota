@@ -34,6 +34,7 @@ export async function getShifts() {
   }).catch(error => {
     console.log(error)
   })
+  console.log(db)
 }
 
 // let users = [
@@ -91,15 +92,12 @@ export async function getShifts() {
 //   }
 // ];
 
-export async function writeShift(am, date, userId) {
-
-}
 
 
 function datesEqual(d1, d2) {
-  if ((d1.getFullYear() == d2.getFullYear()) &&
-    (d1.getMonth() == d2.getMonth()) &&
-    (d1.getDay() == d2.getDay())) {
+  if ((d1.getFullYear() === d2.getFullYear()) &&
+    (d1.getMonth() === d2.getMonth()) &&
+    (d1.getDate() === d2.getDate())) {
     return true;
   } else {
     return false;
@@ -159,5 +157,5 @@ export async function addUserToDay(am, date, userId) {
       });
       console.log('User added!');
     });
-  
+
 }

@@ -1,22 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
-import { getShifts, getUsers } from './util/dbHandler';
+import { ClearLocalDb, getShifts, getUsers } from './util/dbHandler';
 import { useState } from 'react';
-
+import { useFonts } from 'expo-font';
 
 export default function App() {
   async function loadServer() {
     if (!serverLoaded) {
       await getUsers();
       await getShifts();
+      console.log('data loaded ')
       setServerLoaded(true);
-      console.log('data loaded')
     }
   }
 
+  const [fontsLoaded] = useFonts({
+    'CourierPrime': require('./assets/fonts/CourierPrime-Regular.ttf'),
+    'CourierPrimeBold' : require('./assets/fonts/CourierPrime-Bold.ttf')
+  });
   const [serverLoaded, setServerLoaded] = useState(false)
-  loadServer()
+  if (fontsLoaded) {
+    loadServer()
+  }
 
   return (
     <>
@@ -30,6 +36,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffff',
+    backgroundColor: 'white',
   }
 });

@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Button, Pressable } from "react-native";
 import { deleteRecordById, getUserColorById } from "../util/dbHandler";
-import SmallButton from "./SmallButton";
 
 export default function PersonCard({ relaodDay, personData, editing, recordId, onPress }) { //personData is the userObject(id, name, color)
   let color = getUserColorById(personData.id)
@@ -19,7 +18,7 @@ export default function PersonCard({ relaodDay, personData, editing, recordId, o
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
-    fontWeight: '400'
+    fontFamily: 'CourierPrime'
   },
   container: {
     flexDirection: "row",
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    elevation: 2,
+    elevation: 4,
 		shadowColor: 'black',
 		shadowOffset: { width: 0, height: 2 },
 		shadowRadius: 1,

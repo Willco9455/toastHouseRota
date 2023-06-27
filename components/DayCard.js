@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, Pressable, FlatList } from "react-native";
 import { deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
-import SmallButton from "./SmallButton";
 import AddPersonButton from "./AddPersonButton";
 import AddPersonModal from "./AddPersonModal";
 
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 
 
 export default function DayCard({ date, editing }) {
@@ -56,8 +58,9 @@ export default function DayCard({ date, editing }) {
 		<View style={styles.outerContainer}>
 			<View style={styles.innerContainer}>
 				<View style={styles.dateContainer}>
-					<Text style={styles.dayText} >{weekday[date.item.getUTCDay()]}</Text>
+					<Text style={styles.dayText} >{weekday[date.item.getDay()]}</Text>
 					<Text style={styles.dateText} >{date.item.getDate()}</Text>
+					<Text style={styles.dateText} >{monthNames[date.item.getMonth()]}</Text>
 				</View>
 				<View style={styles.outerPeopleContainer}>
 					<View style={styles.amPeopleContainer}>
@@ -115,8 +118,9 @@ const styles = StyleSheet.create({
 	},
 	dayText: {
 		fontSize: 18,
-		marginHorizontal: 2,
+		marginLeft: 2,
 		color: 'grey',
+		fontFamily: 'CourierPrime'
 	},
 	dateText: {
 		fontSize: 18,
