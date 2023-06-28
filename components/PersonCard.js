@@ -17,17 +17,18 @@ export default function PersonCard({ relaodDay, personData, editing, recordId, o
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
+    fontSize: 17,
     fontFamily: 'CourierPrime'
   },
   container: {
     flexDirection: "row",
     backgroundColor: 'red',
-    paddingVertical: 6,
+    paddingVertical: 7,
     marginVertical: 5,
     minWidth: '90%',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 0.5,
     borderRadius: 8,
     elevation: 4,
 		shadowColor: 'black',

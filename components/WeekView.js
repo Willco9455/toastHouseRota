@@ -5,14 +5,12 @@ import { RefreshControl, View, FlatList } from "react-native";
 import { getWeekFrom } from "../util/dateHelper";
 
 
-
 export default function WeekView({monday, editing}) {
   let week = getWeekFrom(monday);
   const [refreshing, setRefreshing] = useState(false);
 
   async function onRefresh() {
     setRefreshing(true);
-		ClearLocalDb();
 		await getUsers();
     await getShifts();
     setTimeout(() => {

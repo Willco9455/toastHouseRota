@@ -3,9 +3,11 @@ import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pres
 import { addUserToDay, getEmployees, writeShift } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 
-let employees = getEmployees();
-
+let employees = []
 export default function AddPersonModal(props) {
+	const [initialLoad, setInitialLoad] = useState(true)
+	if (initialLoad) { employees = getEmployees(); setInitialLoad(false)}
+	
 
 	async function addUserToDayHandler(id) {
 		await addUserToDay(props.am, props.date.item, id)

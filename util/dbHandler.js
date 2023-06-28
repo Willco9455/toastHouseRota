@@ -11,8 +11,9 @@ export function ClearLocalDb() {
 // fetches all the users from the database
 export async function getUsers() {
   // return
+  let tempUsers = [];
   await firestore().collection('users').get().then(querySnapshot => {
-    querySnapshot.forEach(x => users.push({
+    querySnapshot.forEach(x => tempUsers.push({
       id: x.data().id,
       name: x.data().name,
       color: x.data().color
@@ -20,12 +21,14 @@ export async function getUsers() {
   }).catch(error => {
     console.log(error)
   })
+  users = [...tempUsers];
 }
 
 export async function getShifts() {
   // return 
+  let tempDb = [];
   await firestore().collection('shifts').get().then(querySnapshot => {
-    querySnapshot.forEach(x => db.push({
+    querySnapshot.forEach(x => tempDb.push({
       id: x.id,
       date: x.data().date.toDate(),
       userId: x.data().userId,
@@ -34,7 +37,7 @@ export async function getShifts() {
   }).catch(error => {
     console.log(error)
   })
-  console.log(db)
+  db = [...tempDb]
 }
 
 // let users = [
@@ -91,7 +94,6 @@ export async function getShifts() {
 //     am: true
 //   }
 // ];
-
 
 
 function datesEqual(d1, d2) {

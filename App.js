@@ -19,7 +19,9 @@ export default function App() {
     'CourierPrime': require('./assets/fonts/CourierPrime-Regular.ttf'),
     'CourierPrimeBold' : require('./assets/fonts/CourierPrime-Bold.ttf')
   });
+
   const [serverLoaded, setServerLoaded] = useState(false)
+  
   if (fontsLoaded) {
     loadServer()
   }

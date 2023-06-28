@@ -2,34 +2,51 @@ import { Button, FlatList, Image, Platform, SafeAreaView, StyleSheet, Text, View
 
 import * as dateHelper from "../util/dateHelper";
 import { useCallback, useState } from "react";
-import Globals from "../util/Globals";
 import StyledButton from "../components/StyledButton";
-import WeekView from "../components/WeekView";
 import WeekNavigation from "../components/WeekNavigation";
+import LoginModal from "../components/LoginModal";
+import { getIsAdmin, hashCode, loadAdmin, revokeAdmin } from "../util/Security";
 
-
+loadAdmin();
 
 function HomeScreen() {
 	const [editing, setEditing] = useState(false);
-	const [admin, setAdmin] = useState(Globals.isAdmin)
-	
+	const [admin, setAdmin] = useState(getIsAdmin())
+	const [loginModalVisible, setLoginModalVisible] = useState(false);
+
 	function editButtonHandler() {
 		setEditing(!editing)
 	}
 
 	function loginHandler() {
-		Globals.isAdmin = !admin
-		setAdmin(!admin)
+		setLoginModalVisible(true);
 	}
 
+	function onLoginModalClose() {
+		setLoginModalVisible(false);
+	}
+
+	function logOutHandler() {
+		revokeAdmin();
+		setAdmin(getIsAdmin())
+	}
+
+	const loginButton = <StyledButton onPress={loginHandler}>Login</StyledButton>
+	const logOutButton = <StyledButton onPress={logOutHandler}>LogOut</StyledButton>
+	const editButton = <StyledButton disabled={!admin} onPress={editButtonHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
 	return (
 		<SafeAreaView style={styles.screenContainer}>
 			<View style={styles.headerContainer}>
-				<StyledButton onPress={loginHandler}>Login</StyledButton>
+				<View style={styles.headerButton}>
+					{admin ? logOutButton : loginButton}
+				</View>
 				<Image style={styles.logo} source={require('../assets/images/toastHouseLogo.png')} />
-				<StyledButton disabled={!admin} onPress={editButtonHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
+				<View style={styles.headerButton}>
+					{ admin ? editButton : null }
+				</View>
 			</View>
-			<WeekNavigation editing={editing}/>
+			<WeekNavigation editing={editing} />
+			<LoginModal setAdmin={setAdmin} onClose={onLoginModalClose} visible={loginModalVisible} />
 		</SafeAreaView>
 	);
 }
@@ -50,9 +67,14 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: '50%',
+		// width: '50%',
 		height: 40,
+		flex: 7
 	},
+	headerButton: {
+		flex: 5,
+		// backgroundColor: 'red'
+	}
 });
 
 export default HomeScreen;
