@@ -4,10 +4,10 @@
     "slug": "toastHouseRota",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets//images/toastHouseIcon.png",
+    "icon": "./assets/images/toastHouseIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets//images/toastHouseLogo.png",
+      "image": "./assets/images/toastHouseLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

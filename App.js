@@ -4,6 +4,7 @@ import HomeScreen from './screens/HomeScreen';
 import { ClearLocalDb, getShifts, getUsers } from './util/dbHandler';
 import { useState } from 'react';
 import { useFonts } from 'expo-font';
+import { LoadingScreen } from './screens/LoadingScreen';
 
 export default function App() {
   async function loadServer() {
@@ -29,7 +30,7 @@ export default function App() {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        { serverLoaded ? <HomeScreen /> : null}
+        { serverLoaded ? <HomeScreen /> : <LoadingScreen />}
       </SafeAreaView>
       <StatusBar style="dark" />
     </>);

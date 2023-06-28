@@ -124,8 +124,10 @@ const styles = StyleSheet.create({
 	},
 	dateText: {
 		fontSize: 18,
-		marginHorizontal: 10,
+		// marginHorizontal: 10,
+		marginLeft: 10,
 		color: 'grey',
+		fontFamily: 'CourierPrime'
 	},
 	addButtonsContainer: {
 		flexDirection: 'row'
