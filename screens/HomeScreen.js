@@ -1,6 +1,5 @@
 import { Button, FlatList, Image, Platform, SafeAreaView, StyleSheet, Text, View, RefreshControl } from "react-native";
 
-import * as dateHelper from "../util/dateHelper";
 import { useCallback, useState } from "react";
 import StyledButton from "../components/StyledButton";
 import WeekNavigation from "../components/WeekNavigation";
@@ -8,6 +7,8 @@ import LoginModal from "../components/LoginModal";
 import { getIsAdmin, hashCode, loadAdmin, revokeAdmin } from "../util/Security";
 
 loadAdmin();
+
+// console.log(hashCode('ToastHouse22'))
 
 function HomeScreen() {
 	const [editing, setEditing] = useState(false);
@@ -32,8 +33,10 @@ function HomeScreen() {
 	}
 
 	const loginButton = <StyledButton onPress={loginHandler}>Login</StyledButton>
-	const logOutButton = <StyledButton onPress={logOutHandler}>LogOut</StyledButton>
+	const logOutButton = <StyledButton onPress={logOutHandler}>Logout</StyledButton>
 	const editButton = <StyledButton disabled={!admin} onPress={editButtonHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
+
+
 	return (
 		<SafeAreaView style={styles.screenContainer}>
 			<View style={styles.headerContainer}>
@@ -42,7 +45,7 @@ function HomeScreen() {
 				</View>
 				<Image style={styles.logo} source={require('../assets/images/toastHouseLogo.png')} />
 				<View style={styles.headerButton}>
-					{ admin ? editButton : null }
+					{admin ? editButton : null}
 				</View>
 			</View>
 			<WeekNavigation editing={editing} />

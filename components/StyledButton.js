@@ -20,14 +20,10 @@ const styles = StyleSheet.create({
 		// elevation: 5,
 	},
 	buttonInnerContainer: {
-		// paddingHorizontal: 16,
 		borderRadius: 20,
-		// backgroundColor
-		paddingHorizontal: 20,
-		marginHorizontal: 5,
 		paddingVertical: 5,
 		backgroundColor: 'white',
-		// margin: 20,
+		alignItems: 'center'
 	},
 	buttonText: {
 		color: 'black',

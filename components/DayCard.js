@@ -1,57 +1,56 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, Pressable, FlatList } from "react-native";
-import { deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
+import { addUserToDay, deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 import AddPersonButton from "./AddPersonButton";
-import AddPersonModal from "./AddPersonModal";
 
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+	"July", "August", "September", "October", "November", "December"
 ];
 
 
-export default function DayCard({ date, editing }) {
+export default function DayCard({ date, editing, showCreateShift, setDateEditing }) {
 	const [reload, setReload] = useState(false);
-	const [showModal, setShowModal] = useState(false);
-	const [am, setAm] = useState();
+
 
 	// gets all people working on the da of the card 
 	let people = getPeopleFromDate(date.item);
-	let amPeople = people.filter(x => { return x.am });
-	let pmPeople = people.filter(x => { return !x.am })
 
 	let addButtons = <View style={styles.addButtonsContainer}>
-			<AddPersonButton onPress={() => addEmployeeHandler(true)} />
-			<AddPersonButton onPress={() => addEmployeeHandler(false)} />
-		</View>
+		<AddPersonButton onPress={() => addEmployeeHandler()} />
+	</View>
 
 	function reloadDay() {
 		setReload(!reload);
 	}
 
-	function addEmployeeHandler(am) {
-		if (am) {
-			setAm(true);
-		} else {
-			setAm(false);
-		}
-		showModalHandler();
+	function addEmployeeHandler() {
+		setDateEditing(date.item);
+		showCreateShift();
 	}
 
 	async function onDayPressHandler(recordId) {
-    if (editing) {
-      await deleteRecordById(recordId);
-      reloadDay();
-    }
-  }
-
-	function showModalHandler() {
-		setShowModal(true);
+		if (editing) {
+			await deleteRecordById(recordId);
+			reloadDay();
+		}
 	}
 
-	function hideModalHandler() {
-		setShowModal(false);
+	function calcStartFlex(startTime) {
+
+		flex = startTime.getHours() - 9;
+		return flex
+	}
+
+	function calcShiftFlex(startTime, endTime) {
+		flex = endTime.getHours() - startTime.getHours()
+		return flex
+	}
+
+	function calcEndFlex(endTime) {
+		flex = 17 - endTime.getHours();
+		return flex
 	}
 
 	return (
@@ -63,24 +62,28 @@ export default function DayCard({ date, editing }) {
 					<Text style={styles.dateText} >{monthNames[date.item.getMonth()]}</Text>
 				</View>
 				<View style={styles.outerPeopleContainer}>
-					<View style={styles.amPeopleContainer}>
-						<FlatList
-							data={amPeople}
-							renderItem={({ item }) => <PersonCard onPress={() => onDayPressHandler(item.id)} relaodDay={reloadDay} editing={editing} personData={getUserById(item.userId)} />}
-							keyExtractor={item => item.id}
-						/>
-					</View>
-					<View style={styles.pmPeopleContainer}>
-						<FlatList
-							data={pmPeople}
-							renderItem={({ item }) => <PersonCard onPress={() => onDayPressHandler(item.id)} relaodDay={reloadDay} editing={editing} personData={getUserById(item.userId)} />}
-							keyExtractor={item => item.id}
-						/>
-					</View>
+					<FlatList
+						data={people}
+						renderItem={({ item }) => (
+							<View style={{ flex: 1, flexDirection: 'row' }}>
+								<View style={{ flex: calcStartFlex(item.startTime) }}></View>
+								<View style={{ flex: calcShiftFlex(item.startTime, item.endTime) }}>
+									<PersonCard
+										onPress={() => onDayPressHandler(item.id)}
+										relaodDay={reloadDay}
+										shiftData={item}
+										personData={getUserById(item.userId)}
+										editing={editing}
+									/>
+								</View>
+								<View style={{ flex: calcEndFlex(item.endTime) }}></View>
+							</View>
+						)}
+						keyExtractor={item => item.id}
+					/>
 				</View>
 				{editing ? addButtons : null}
 			</View>
-			<AddPersonModal reloadDay={reloadDay} am={am} date={date} onCancel={hideModalHandler} visible={showModal}/>
 		</View>
 	);
 }
@@ -102,7 +105,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.20,
 	},
 	outerPeopleContainer: {
-		flexDirection: 'row',
 		marginTop: 10,
 	},
 	amPeopleContainer: {
@@ -124,7 +126,6 @@ const styles = StyleSheet.create({
 	},
 	dateText: {
 		fontSize: 18,
-		// marginHorizontal: 10,
 		marginLeft: 10,
 		color: 'grey',
 		fontFamily: 'CourierPrime'

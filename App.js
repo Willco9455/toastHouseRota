@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useFonts } from 'expo-font';
 import { LoadingScreen } from './screens/LoadingScreen';
 
+
 export default function App() {
   async function loadServer() {
     if (!serverLoaded) {
@@ -18,11 +19,11 @@ export default function App() {
 
   const [fontsLoaded] = useFonts({
     'CourierPrime': require('./assets/fonts/CourierPrime-Regular.ttf'),
-    'CourierPrimeBold' : require('./assets/fonts/CourierPrime-Bold.ttf')
+    'CourierPrimeBold': require('./assets/fonts/CourierPrime-Bold.ttf')
   });
 
   const [serverLoaded, setServerLoaded] = useState(false)
-  
+
   if (fontsLoaded) {
     loadServer()
   }
@@ -30,10 +31,11 @@ export default function App() {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        { serverLoaded ? <HomeScreen /> : <LoadingScreen />}
+        {serverLoaded ? <HomeScreen /> : <LoadingScreen />}
       </SafeAreaView>
       <StatusBar style="dark" />
-    </>);
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

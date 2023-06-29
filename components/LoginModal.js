@@ -11,8 +11,9 @@ export default function LoginModal(props) {
     setUserInput(input);
   }
 
-  function loginHandler() {
-    if (hashCode(userInput) === getAdminPassword()) {
+  async function loginHandler() {
+    adminPass = await getAdminPassword();
+    if (hashCode(userInput) === adminPass) {
       storeAdmin();
       props.setAdmin(getIsAdmin())
       props.onClose()

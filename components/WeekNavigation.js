@@ -46,7 +46,7 @@ export default function WeekNavigation({ editing }) {
       onSwipeEnd={swipeHandler}
       initialLayout={{ width: layout.width }}
       renderTabBar={() => null}
-      lazy={false}
+      lazy={true}
     />
   );
 }

@@ -1,29 +1,36 @@
 import { useState } from "react";
-import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pressable } from "react-native";
+import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pressable, ToastAndroid } from "react-native";
 import { addUserToDay, getEmployees, writeShift } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
-
 let employees = []
+
+
 export default function AddPersonModal(props) {
 	const [initialLoad, setInitialLoad] = useState(true)
-	if (initialLoad) { employees = getEmployees(); setInitialLoad(false)}
-	
+	if (initialLoad) { employees = getEmployees(); setInitialLoad(false) }
 
-	async function addUserToDayHandler(id) {
-		await addUserToDay(props.am, props.date.item, id)
-		props.reloadDay()
+
+	async function userPressedHandler(id) {
+		props.onUserPressed(id)
+		props.onCancel()
 	}
 
 	return (
 		<Modal transparent={true} visible={props.visible} animationType="fade">
 			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}>
 				<View style={styles.container} >
-					<FlatList
-						data={employees}
-						renderItem={({ item }) =><PersonCard onPress={() => addUserToDayHandler(item.id)} editing={false} personData={item} />}
-						keyExtractor={item => item.id}
-					/>
-					<Button onPress={props.onCancel} title="Cancel" />
+						<FlatList
+							data={employees}
+							renderItem={({ item }) => (
+								<View style={{ flex: 1}}>
+									<PersonCard onPress={() => userPressedHandler(item.id)} editing={false} personData={item} />
+								</View>
+							)}
+							keyExtractor={item => item.id}
+						/>
+					<View style={styles.cancelButton}>
+						<Button onPress={props.onCancel} title="Done" />
+					</View>
 				</View>
 			</View>
 		</Modal>
@@ -32,24 +39,12 @@ export default function AddPersonModal(props) {
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'column',
-		alignItems: 'center',
 		padding: 16,
-		backgroundColor: '#311b6b',
+		backgroundColor: 'white',
 		borderRadius: 30,
 		marginHorizontal: 20,
-		paddingBottom: 40,
+		paddingBottom: 20,
 		maxHeight: '70%',
-	},
-	textInput: {
-		borderWidth: 1,
-		borderColor: '#e4d0ff',
-		width: '90%',
-		marginRight: 8,
-		marginVertical: 10,
-		padding: 10,
-		backgroundColor: '#e4d0ff',
-		borderRadius: 6,
 	},
 	buttonContainer: {
 		flexDirection: 'row',
@@ -65,5 +60,8 @@ const styles = StyleSheet.create({
 		width: 100,
 		height: 100,
 		margin: 20
+	},
+	cancelButton: {
+		marginTop: 10
 	}
 })

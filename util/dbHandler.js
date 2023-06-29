@@ -25,75 +25,22 @@ export async function getUsers() {
 }
 
 export async function getShifts() {
-  // return 
+  // return
   let tempDb = [];
   await firestore().collection('shifts').get().then(querySnapshot => {
     querySnapshot.forEach(x => tempDb.push({
       id: x.id,
       date: x.data().date.toDate(),
+      timeSelected: x.data().timeSelected,
+      startTime: x.data().startTime.toDate(),
+      endTime: x.data().endTime.toDate(),
       userId: x.data().userId,
-      am: x.data().am
     }));
   }).catch(error => {
-    console.log(error)
+    console.log("Server Error")
   })
   db = [...tempDb]
 }
-
-// let users = [
-//   {
-//     color: "orange",
-//     id: 1,
-//     name: "Spaz"
-//   },
-//   {
-//     color: "grey",
-//     id: 2,
-//     name: "Lisa"
-//   },
-//   {
-//     color: "yellow",
-//     id: 3,
-//     name: "Pivy"
-//   },
-//   {
-//     color: "pink",
-//     id: 4,
-//     name: "Natasha"
-//   }]
-
-// let db = [
-//   {
-//     id: 1,
-//     date: new Date(2023, 5, 26),
-//     userId: 4,
-//     am: true
-//   },
-//   {
-//     id: 2,
-//     date: new Date(2023, 5, 27),
-//     userId: 3,
-//     am: true
-//   },
-//   {
-//     id: 3,
-//     date: new Date(2023, 5, 26),
-//     userId: 1,
-//     am: true
-//   },
-//   {
-//     id: 4,
-//     date: new Date(2023, 5, 26),
-//     userId: 2,
-//     am: false
-//   },
-//   {
-//     id: 5,
-//     date: new Date(2023, 5, 26),
-//     userId: 1,
-//     am: true
-//   }
-// ];
 
 
 function datesEqual(d1, d2) {
@@ -113,22 +60,6 @@ export function getPeopleFromDate(d) {
   return newResults
 }
 
-export async function deleteRecordById(id) {
-  await firestore()
-    .collection('shifts')
-    .doc(id)
-    .delete()
-    .catch((e) => {
-      console.log("ERROR HERE")
-      console.log(e)
-    })
-    .then(() => {
-      db = db.filter(x => {
-        return !(x.id === id)
-      });
-      console.log('User deleted!');
-    });
-}
 
 export function getUserColorById(id) {
   return users.find(x => x.id === id).color
@@ -142,22 +73,78 @@ export function getUserById(id) {
   return users.find(x => x.id === id)
 }
 
-export async function addUserToDay(am, date, userId) {
+export async function addUserToDay(userId, date, timeSelected, starTime, endTime,) {
   await firestore()
     .collection('shifts')
     .add({
-      am: am,
-      date: date,
       userId: userId,
-    })
-    .then((docRef) => {
+      date: date,
+      timeSelected: timeSelected,
+      startTime: starTime,
+      endTime: endTime
+    }).then((docRef) => {
       db.push({
         id: docRef.id,
         userId: userId,
         date: date,
-        am: am,
-      });
-      console.log('User added!');
+        timeSelected: timeSelected,
+        startTime: starTime,
+        endTime: endTime
+      })
     });
-
+  console.log('User added!');
 }
+
+export async function deleteRecordById(id) {
+  await firestore()
+    .collection('shifts')
+    .doc(id)
+    .delete()
+    .catch((e) => {
+      console.log("ERROR HERE")
+      console.log(e)
+    })
+    .then(() => {
+      db = db.filter(x => {
+        return !(x.id === id)
+      });
+    });
+}
+// OLD deleteRecordById
+// export async function deleteRecordById(id) {
+//   await firestore()
+//     .collection('shifts')
+//     .doc(id)
+//     .delete()
+//     .catch((e) => {
+//       console.log("ERROR HERE")
+//       console.log(e)
+//     })
+//     .then(() => {
+//       db = db.filter(x => {
+//         return !(x.id === id)
+//       });
+//       console.log('User deleted!');
+//     });
+// }
+
+// OLD addUserToDay
+// export async function addUserToDay(am, date, userId) {
+//   await firestore()
+//     .collection('shifts')
+//     .add({
+//       am: am,
+//       date: date,
+//       userId: userId,
+//     })
+//     .then((docRef) => {
+//       db.push({
+//         id: docRef.id,
+//         userId: userId,
+//         date: date,
+//         am: am,
+//       });
+//       console.log('User added!');
+//     });
+
+// }

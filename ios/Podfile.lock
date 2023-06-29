@@ -1105,6 +1105,8 @@ PODS:
     - React-perflogger (= 0.71.8)
   - RNCAsyncStorage (1.18.2):
     - React-Core
+  - RNDateTimePicker (6.7.3):
+    - React-Core
   - RNFBApp (18.1.0):
     - Firebase/CoreOnly (= 10.11.0)
     - React-Core
@@ -1161,6 +1163,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1269,6 +1272,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBFirestore:
@@ -1334,6 +1339,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7c51ae9d4b3e9608a2366e39ccaa606aa551b9ed
   ReactCommon: 9957c7530467adbdf4a4a1476d636bd00b2e4dd8
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
+  RNDateTimePicker: 00247f26c34683c80be94207f488f6f13448586e
   RNFBApp: fdbde65110240cd843e644270e974e9b455b0fc1
   RNFBFirestore: 76b44f22aef2629595bdc29fae03345224f185b3
   Yoga: 065f0b74dba4832d6e328238de46eb72c5de9556
