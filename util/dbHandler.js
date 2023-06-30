@@ -40,6 +40,7 @@ export async function getShifts() {
     console.log("Server Error")
   })
   db = [...tempDb]
+  db.sort(compare);
 }
 
 
@@ -110,41 +111,21 @@ export async function deleteRecordById(id) {
       });
     });
 }
-// OLD deleteRecordById
-// export async function deleteRecordById(id) {
-//   await firestore()
-//     .collection('shifts')
-//     .doc(id)
-//     .delete()
-//     .catch((e) => {
-//       console.log("ERROR HERE")
-//       console.log(e)
-//     })
-//     .then(() => {
-//       db = db.filter(x => {
-//         return !(x.id === id)
-//       });
-//       console.log('User deleted!');
-//     });
-// }
 
-// OLD addUserToDay
-// export async function addUserToDay(am, date, userId) {
-//   await firestore()
-//     .collection('shifts')
-//     .add({
-//       am: am,
-//       date: date,
-//       userId: userId,
-//     })
-//     .then((docRef) => {
-//       db.push({
-//         id: docRef.id,
-//         userId: userId,
-//         date: date,
-//         am: am,
-//       });
-//       console.log('User added!');
-//     });
+export function sortShifts() {
+  db.sort(compare)
+}
 
-// }
+// used to sort the shifts in oreer of shift length
+function compare(a, b) {
+  aLength = a.endTime.getHours() - a.startTime.getHours()
+  bLength = b.endTime.getHours() - b.startTime.getHours()
+  if (aLength < bLength) {
+    return 1;
+  }
+  if (aLength > bLength) {
+    return -1;
+  }
+  return 0;
+}
+

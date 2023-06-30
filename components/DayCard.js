@@ -38,8 +38,7 @@ export default function DayCard({ date, editing, showCreateShift, setDateEditing
 	}
 
 	function calcStartFlex(startTime) {
-
-		flex = startTime.getHours() - 9;
+		flex = startTime.getHours() - 8;
 		return flex
 	}
 

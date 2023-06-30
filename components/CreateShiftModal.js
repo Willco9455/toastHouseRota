@@ -4,7 +4,7 @@ import { TimeSelectButton } from "./TimeSelectButton";
 import { useState } from "react";
 import AddPersonModal from "./AddPersonModal";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { addUserToDay, getUserById } from "../util/dbHandler";
+import { addUserToDay, getUserById, sortShifts } from "../util/dbHandler";
 
 
 let startTime = new Date();
@@ -23,7 +23,7 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
   async function addPressHandler() {
     if (timeSelected === 'am') {
       startTime = new Date(date)
-      startTime.setHours(9, 0)
+      startTime.setHours(8, 0)
       endTime = new Date(date)
       endTime.setHours(12, 0)
     } else if (timeSelected === 'pm') {
@@ -33,11 +33,12 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
       endTime.setHours(17, 0)
     } else if (timeSelected === 'fullDay') {
       startTime = new Date(date)
-      startTime.setHours(9, 0)
+      startTime.setHours(8, 0)
       endTime = new Date(date)
       endTime.setHours(17, 0)
     }
     await addUserToDay(selectedUser.id, date, timeSelected, startTime, endTime)
+    sortShifts();
     outerReload();
     ToastAndroid.show('Shift Added!', ToastAndroid.SHORT);
     console.log('Added')
