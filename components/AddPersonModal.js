@@ -16,7 +16,7 @@ export default function AddPersonModal(props) {
 	}
 
 	return (
-		<Modal transparent={true} visible={props.visible} animationType="fade">
+		<Modal transparent={true} visible={props.visible}>
 			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}>
 				<View style={styles.container} >
 						<FlatList

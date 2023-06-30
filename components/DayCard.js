@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
 		fontFamily: 'CourierPrime'
 	},
 	addButtonsContainer: {
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	buttonContainer: {
 		flex: 1

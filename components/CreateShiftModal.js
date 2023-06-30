@@ -1,4 +1,4 @@
-import { Button, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid } from "react-native";
 import AddPersonButton from "./AddPersonButton";
 import { TimeSelectButton } from "./TimeSelectButton";
 import { useState } from "react";
@@ -39,6 +39,7 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
     }
     await addUserToDay(selectedUser.id, date, timeSelected, startTime, endTime)
     outerReload();
+    ToastAndroid.show('Shift Added!', ToastAndroid.SHORT);
     console.log('Added')
   }
 
