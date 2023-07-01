@@ -1,4 +1,4 @@
-import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid } from "react-native";
+import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid, ScrollView } from "react-native";
 import AddPersonButton from "./AddPersonButton";
 import { TimeSelectButton } from "./TimeSelectButton";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
       startTime = new Date(date)
       startTime.setHours(8, 0)
       endTime = new Date(date)
-      endTime.setHours(12, 0)
+      endTime.setHours(13, 0)
     } else if (timeSelected === 'pm') {
       startTime = new Date(date)
       startTime.setHours(12, 0)
@@ -109,25 +109,27 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
           <Text style={styles.title}>Create Shift</Text>
-          <View style={{ justifyContent: 'center', flexDirection: 'column', alignItems: "stretch" }}>
+          <View style={{ flexDirection: 'column'}}>
             <View style={styles.userSelectContainer}>
               <TimeSelectButton backgroundColor={'white'} onPress={selectEmployeeHandler}>{selectedUser ? selectedUser.name : 'Select User'}</TimeSelectButton>
             </View>
-            <View style={styles.timeSelectContainer}>
-              <TimeSelectButton onPress={amSelect} highlighted={(timeSelected === 'am')}>AM</TimeSelectButton>
-              <TimeSelectButton onPress={pmSelect} highlighted={(timeSelected === 'pm')}>PM</TimeSelectButton>
-              <TimeSelectButton onPress={fullDaySelect} highlighted={(timeSelected === 'fullDay')}>Full Day</TimeSelectButton>
-            </View>
+            {/* <ScrollView horizontal={true}> */}
+              <View style={styles.timeSelectContainer}>
+                <TimeSelectButton onPress={amSelect} highlighted={(timeSelected === 'am')}>AM</TimeSelectButton>
+                <TimeSelectButton onPress={pmSelect} highlighted={(timeSelected === 'pm')}>PM</TimeSelectButton>
+                <TimeSelectButton onPress={fullDaySelect} highlighted={(timeSelected === 'fullDay')}>Full Day</TimeSelectButton>
+              </View>
+            {/* </ScrollView> */}
             <View style={styles.customTimeSelcector}>
               <TimeSelectButton onPress={customSelect} highlighted={(timeSelected === 'custom')}>Custom</TimeSelectButton>
               {(timeSelected === 'custom') ? customTimeSelector : null}
             </View>
             <View style={styles.buttonsContainer}>
-              <View style={{flex: 2}}></View>
-              <View style={{flex: 3}}><Button onPress={onCancel} color={'red'} title="Close" /></View>
-              <View style={{flex: 2}}></View>
-              <View style={{flex: 3}}><Button onPress={addPressHandler} title="Add" /></View>
-              <View style={{flex: 2}}></View>
+              <View style={{ flex: 2 }}></View>
+              <View style={{ flex: 3 }}><Button onPress={onCancel} color={'red'} title="Close" /></View>
+              <View style={{ flex: 2 }}></View>
+              <View style={{ flex: 3 }}><Button onPress={addPressHandler} title="Add" /></View>
+              <View style={{ flex: 2 }}></View>
             </View>
           </View>
         </View>
@@ -145,7 +147,7 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
         onConfirm={handleConfirm}
         onCancel={hideTimePicker}
       />
-    </Modal>
+    </Modal >
   );
 }
 
@@ -160,10 +162,10 @@ const styles = StyleSheet.create({
     width: '90%',
     backgroundColor: 'white',
     borderRadius: 40,
-    overflow: 'hidden',
     paddingTop: 10,
     paddingBottom: 20,
-    alignItems: 'center'
+    overflow: 'visible',
+    flexShrink: 1
   },
   title: {
     fontSize: 25,
@@ -173,13 +175,14 @@ const styles = StyleSheet.create({
   },
   timeSelectContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+    flexWrap: 'wrap'
+
   },
   customTimeSelcector: {
-    flexDirection: 'row',
-
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   userSelectContainer: {
     alignItems: 'center',
@@ -190,17 +193,16 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginVertical: 20
+    marginVertical: 20,
   },
   timeText: {
     fontSize: 22,
     fontFamily: 'CourierPrimeBold'
   },
   timePickerContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 20,
+    marginTop: 16
   }
 });

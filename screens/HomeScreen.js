@@ -8,7 +8,8 @@ import { getIsAdmin, hashCode, loadAdmin, revokeAdmin } from "../util/Security";
 
 loadAdmin();
 
-// console.log(hashCode('ToastHouse22'))
+// for getting a new password hash
+// console.log(hashCode('Admin'))
 
 function HomeScreen() {
 	const [editing, setEditing] = useState(false);
