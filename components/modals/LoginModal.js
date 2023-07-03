@@ -12,7 +12,7 @@ export default function LoginModal(props) {
   }
 
   async function loginHandler() {
-    adminPass = await getAdminPassword();
+    let adminPass = await getAdminPassword();
     if (hashCode(userInput) === adminPass) {
       storeAdmin();
       props.setAdmin(getIsAdmin())

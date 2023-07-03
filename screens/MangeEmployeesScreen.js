@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, FlatList, Button, TextInput, Pressable, Alert, 
 import { addUser, deleteUserById, getEmployees } from "../util/dbHandler";
 import { Ionicons } from '@expo/vector-icons';
 import PersonCard from "../components/PersonCard";
-import { ColorPickerModal } from "../components/Modals/ColorPickerModal";
+import {ColorPickerModal} from "../components/modals/ColorPickerModal";
+
 
 
 export function ManageEmployeesScreen() {
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   textInput: {
     borderBottomWidth: 1,

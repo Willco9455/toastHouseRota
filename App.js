@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { getShifts, getUsers } from './util/dbHandler';
+import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { getShifts, getShiftsWeb, getUsers, getUsersWeb } from './util/dbHandler';
 import { useState } from 'react';
 import { useFonts } from 'expo-font';
 import { LoadingScreen } from './screens/LoadingScreen';
@@ -28,8 +28,13 @@ export default function App() {
 
   async function loadServer() {
     if (!serverLoaded) {
-      await getUsers();
-      await getShifts();
+      if (Platform.OS === 'web') {
+        await getUsersWeb();
+        await getShiftsWeb();
+      } else {
+        await getUsers();
+        await getShifts();
+      }
       console.log('data loaded ')
       setServerLoaded(true);
     }
@@ -60,6 +65,10 @@ export default function App() {
           fontSize: 14,
           fontFamily: 'CourierPrime',
         },
+        tabBarStyle: {
+          height: '7%',
+          paddingBottom: 8,
+        },
         tabBarHideOnKeyboard: true,
       })}
     >
@@ -72,7 +81,7 @@ export default function App() {
   function renderMain() {
     if (!serverLoaded) {
       return <LoadingScreen />
-    } else if (getIsAdmin()) {
+    } else if (getIsAdmin() && !(Platform.OS === 'web')) {
       return adminHome
     } else {
       return <HomeScreen refreshFromAppJS={refreshFromAppJS} />
@@ -93,5 +102,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    paddingTop: Platform.OS == 'android' ? 45 : 10
   }
 });

@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Button, Pressable } from "react-native";
+import { StyleSheet, Text, View, Button, Pressable, Platform } from "react-native";
 import { deleteRecordById, getUserColorById } from "../util/dbHandler";
 
 export default function PersonCard({shiftData, personData, editing, onPress }) { //personData is the userObject(id, name, color)
-  
+
   let color = getUserColorById(personData.id)
   
   function getSubText() {
@@ -32,12 +32,12 @@ export default function PersonCard({shiftData, personData, editing, onPress }) {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 17,
+    fontSize: Platform.OS =='web' ? 12 : 17,
     fontFamily: 'CourierPrime'
   },
   subText: {
     opacity: 0.8,
-    fontSize: 12,
+    fontSize: Platform.OS =='web' ? 10 : 12,
   },
   container: {
     flex: 1,

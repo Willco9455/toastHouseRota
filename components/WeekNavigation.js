@@ -1,10 +1,10 @@
 import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import WeekView from './WeekView';
-import { addDays, getMonday } from '../util/dateHelper';
+import { addDays, getMonday, getMondaysFromDate } from '../util/dateHelper';
 import { useState } from 'react';
 
-const monday = getMonday();
+const monday = getMonday(new Date());
 let maxWeek = addDays(monday, 14);
 let oldIndex = 4;
 

@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
+import { collection, getDocs, getFirestore, query } from 'firebase/firestore';
+import { getAdminPasswordDb } from './dbHandler';
 
 let admin = false;
 
@@ -48,11 +50,6 @@ export function hashCode(str) {
 }
 
 export async function getAdminPassword() {
-  let password = null
-  await firestore().collection('credentials').get().then(querySnapshot => {
-    querySnapshot.forEach(x => {password = x.data().password});
-  }).catch(error => {
-    console.log("Server Error")
-  })
+  let password = getAdminPasswordDb()
   return password;
 }

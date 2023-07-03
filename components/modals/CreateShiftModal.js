@@ -1,16 +1,26 @@
-import { useState } from "react";
-import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid } from "react-native";
+import { createElement, useState } from "react";
+import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid, Platform } from "react-native";
 
 import { TimeSelectButton } from "../buttons/TimeSelectButton";
 import { addUserToDay, getUserById, sortShifts } from "../../util/dbHandler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AddPersonModal from "./AddPersonModal";
 
+
 let startTime = new Date();
 startTime.setHours(9, 0, 0, 0);
 let endTime = new Date();
 endTime.setHours(17, 0, 0, 0)
 
+
+function DateTimePicker({ value, onChange }) {
+
+  return createElement('input', {
+    type: 'time',
+    value: value,
+    onInput: onChange,
+  })
+}
 
 export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
   const [timeSelected, setTimeSelected] = useState('am');
@@ -40,6 +50,13 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
     sortShifts();
     outerReload();
     ToastAndroid.show('Shift Added!', ToastAndroid.SHORT);
+  }
+
+  function webStartTimeChange(changed) {
+    startTime = new Date('01-01-1970 ' + changed.target.value)
+  }
+  function webEndTimeChange(changed) {
+    endTime = new Date('01-01-1970 ' + changed.target.value)
   }
 
   function amSelect() {
@@ -93,14 +110,24 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
     setSelectedUser(getUserById(id))
   }
 
-  let customTimeSelector = <View style={styles.timePickerContainer}>
-    <Pressable onPress={selectStartTime}>
-      <Text style={styles.timeText}>{startTime.toLocaleString('en-GB').slice(12, 17)} - </Text>
-    </Pressable>
-    <Pressable onPress={selectEndTime}>
-      <Text style={styles.timeText}>{endTime.toLocaleString('en-GB').slice(12, 17)}</Text>
-    </Pressable>
-  </View>
+  let customTimeSelector = null;
+  if (Platform.OS === 'web') {
+    customTimeSelector = <View style={styles.timePickerContainer}>
+      <DateTimePicker onChange={webStartTimeChange} />
+      <Text> - </Text>
+      <DateTimePicker onChange={webEndTimeChange} />
+    </View>
+  } else {
+    customTimeSelector = <View style={styles.timePickerContainer}>
+      <Pressable onPress={selectStartTime}>
+        <Text style={styles.timeText}>{startTime.toLocaleString('en-GB').slice(12, 17)} - </Text>
+      </Pressable>
+      <Pressable onPress={selectEndTime}>
+        <Text style={styles.timeText}>{endTime.toLocaleString('en-GB').slice(12, 17)}</Text>
+      </Pressable>
+    </View>
+  }
+
 
   return (
     <Modal visible={visible} transparent={true}>
@@ -161,6 +188,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     width: '90%',
+    maxWidth: Platform.OS === 'web' ? 350 : null,
     backgroundColor: 'white',
     borderRadius: 40,
     paddingTop: 10,

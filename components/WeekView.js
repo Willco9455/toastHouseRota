@@ -1,7 +1,7 @@
 import DayCard from "../components/DayCard";
 import { useEffect, useState } from "react";
-import { ClearLocalDb, getShifts, getUsers } from "../util/dbHandler";
-import { RefreshControl, View, FlatList } from "react-native";
+import { getShifts, getShiftsWeb, getUsers, getUsersWeb } from "../util/dbHandler";
+import { RefreshControl, View, FlatList, Platform } from "react-native";
 import { getWeekFrom } from "../util/dateHelper";
 import { CreateShiftModal } from "./modals/CreateShiftModal";
 
@@ -14,8 +14,13 @@ export default function WeekView({monday, editing}) {
 
   async function onRefresh() {
     setRefreshing(true);
-		await getUsers();
-    await getShifts();
+    if (Platform.OS === 'web') {
+      await getUsersWeb();
+      await getShiftsWeb();
+    } else {
+      await getUsers();
+      await getShifts();
+    }
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Button, Pressable, FlatList } from "react-native";
+import { View, StyleSheet, Text, Button, Pressable, FlatList, Platform } from "react-native";
 import { addUserToDay, deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 import AddPersonButton from "./buttons/AddPersonButton";
@@ -9,7 +9,6 @@ const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday
 const monthNames = ["January", "February", "March", "April", "May", "June",
 	"July", "August", "September", "October", "November", "December"
 ];
-
 
 export default function DayCard({ date, editing, showCreateShift, setDateEditing }) {
 	const [reload, setReload] = useState(false);
@@ -39,17 +38,17 @@ export default function DayCard({ date, editing, showCreateShift, setDateEditing
 	}
 
 	function calcStartFlex(startTime) {
-		flex = startTime.getHours() - 8;
+		let flex = startTime.getHours() - 8;
 		return flex
 	}
 
 	function calcShiftFlex(startTime, endTime) {
-		flex = endTime.getHours() - startTime.getHours()
+		let flex = endTime.getHours() - startTime.getHours()
 		return flex
 	}
 
 	function calcEndFlex(endTime) {
-		flex = 17 - endTime.getHours();
+		let flex = 17 - endTime.getHours();
 		return flex
 	}
 
@@ -90,15 +89,18 @@ export default function DayCard({ date, editing, showCreateShift, setDateEditing
 
 const styles = StyleSheet.create({
 	outerContainer: {
-		flexDirection: 'column'
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'stretch',
 	},
 	innerContainer: {
+		flex: 1,
 		minHeight: 100,
 		borderTopWidth: 2,
 		borderColor: 'black',
 		padding: 5,
-		backgroundColor: 'white',
 		elevation: 10,
+		borderRightWidth: Platform.OS =='web' ? 2 : 0,
 	},
 	outerPeopleContainer: {
 		marginTop: 10,
@@ -115,13 +117,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	dayText: {
-		fontSize: 18,
+		fontSize: Platform.OS =='web' ? 14 : 18,
 		marginLeft: 2,
 		color: 'grey',
 		fontFamily: 'CourierPrime'
 	},
 	dateText: {
-		fontSize: 18,
+		fontSize: Platform.OS =='web' ? 14 : 18,
 		marginLeft: 10,
 		color: 'grey',
 		fontFamily: 'CourierPrime'

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pressable, ToastAndroid } from "react-native";
+import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pressable, ToastAndroid, Platform } from "react-native";
 import { addUserToDay, getEmployees, writeShift } from "../../util/dbHandler";
 import PersonCard from "../PersonCard";
 let employees = []
@@ -17,7 +17,7 @@ export default function AddPersonModal(props) {
 
 	return (
 		<Modal transparent={true} visible={props.visible}>
-			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}>
+			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}>
 				<View style={styles.container} >
 					<FlatList
 						data={employees}
@@ -45,12 +45,14 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 		paddingBottom: 20,
 		maxHeight: '70%',
+		width: '90%',
+		maxWidth: Platform.OS ==='web' ? 350 : null,
 	},
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginTop: 10,
-		width: '90%'
+		width: '90%',
 	},
 	button: {
 		padding: 10,

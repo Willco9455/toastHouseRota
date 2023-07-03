@@ -5,8 +5,8 @@ import { getIsAdmin, loadAdmin, revokeAdmin } from "../util/Security";
 import StyledButton from "../components//buttons/StyledButton";
 import WeekNavigation from "../components/WeekNavigation";
 import LoginModal from "../components/modals/LoginModal";
+import MonthView from "../components/MonthView";
 
-// 
 loadAdmin();
 
 // for getting a new password hash
@@ -36,6 +36,7 @@ function HomeScreen({ refreshFromAppJS }) {
 		refreshFromAppJS()
 	}
 
+
 	const loginButton = <StyledButton onPress={openLoginHandler}>Login</StyledButton>
 	const logOutButton = <StyledButton onPress={logOutHandler}>Logout</StyledButton>
 	const editButton = <StyledButton disabled={!admin} onPress={editButtonPressHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
@@ -51,7 +52,7 @@ function HomeScreen({ refreshFromAppJS }) {
 					{admin ? editButton : null}
 				</View>
 			</View>
-			<WeekNavigation editing={editing} />
+			{(Platform.OS === 'web') ? <MonthView editing={editing}/> : <WeekNavigation editing={editing} />}
 			<LoginModal setAdmin={setAdmin} onClose={onLoginModalClose} visible={loginModalVisible} />
 		</SafeAreaView>
 	);

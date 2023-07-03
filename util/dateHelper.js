@@ -1,16 +1,11 @@
 // gets the current moday
-export function getMonday() {
-    d = new Date();
+export function getMonday(date) {
+    let d = new Date(date)
     var day = d.getDay(),
         diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
     return new Date(d.setDate(diff));
 }
 
-Date.prototype.addDays = function (days) {
-	var date = new Date(this.valueOf());
-	date.setDate(date.getDate() + days);
-	return date;
-}
 
 export function addDays(date, days) {
     return date.addDays(days);
@@ -18,13 +13,44 @@ export function addDays(date, days) {
 
 // returns array of dateTime objects representing a week from the given date d
 export function getWeekFrom(d) {
-	let week = [d];
+    let week = [d];
 	for (let i = 1; i < 7; i++) {
-		week.push(d.addDays(i))
+        week.push(d.addDays(i))
 	}
     week.shift();
     week.pop();
 	return week;
+}
+
+Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+export function addMonthsToDate(date, months) {
+    return new Date(new Date(date).setMonth(date.getMonth() + months))
+}
+
+// Get the mondays of the month, **Copied from stack overflow**
+export function getMondaysFromDate(date) {
+    var d = date,
+        month = d.getMonth(),
+        mondays = [];
+    d.setDate(1);
+
+    // Get the first Monday in the month
+    while (d.getDay() !== 1) {
+        d.setDate(d.getDate() + 1);
+    }
+
+    // Get all the other Mondays in the month
+    while (d.getMonth() === month) {
+        mondays.push(new Date(d.getTime()));
+        d.setDate(d.getDate() + 7);
+    }
+
+    return mondays;
 }
 
 // **
