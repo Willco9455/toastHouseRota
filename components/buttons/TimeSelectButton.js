@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
 
-export function TimeSelectButton({ children, highlighted, onPress }) {
+export function TimeSelectButton({ children, highlighted, onPress, backgroundColor }) {
   const [scaleValue] = useState( new Animated.Value(1));
 
   const startAnimate = () => {
@@ -25,7 +25,7 @@ export function TimeSelectButton({ children, highlighted, onPress }) {
 
   return (
     <Pressable onPress={buttonPressHandler}>
-      <Animated.View style={highlighted ? [styles.buttonContainer, { borderColor: '#1768ff', transform: [{scale: scaleValue}]}] : styles.buttonContainer}>
+      <Animated.View style={highlighted ? [styles.buttonContainer, { backgroundColor: backgroundColor ,borderColor: '#1768ff', transform: [{scale: scaleValue}]}] : [styles.buttonContainer, {backgroundColor: backgroundColor}]}>
         <View>
           <Text style={styles.textStyle}>{children}</Text>
         </View>
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: 'black',
     paddingVertical: 10,
-    paddingHorizontal: 25,
-    marginHorizontal: 10,
+    paddingHorizontal: 15,
+    // marginHorizontal: 10,
     backgroundColor: 'white'
   },
   textStyle: {

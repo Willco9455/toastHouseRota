@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, View, TextInput, Button, Modal, Image, Text, FlatList, Pressable, ToastAndroid } from "react-native";
-import { addUserToDay, getEmployees, writeShift } from "../util/dbHandler";
-import PersonCard from "./PersonCard";
+import { addUserToDay, getEmployees, writeShift } from "../../util/dbHandler";
+import PersonCard from "../PersonCard";
 let employees = []
 
 
@@ -19,15 +19,15 @@ export default function AddPersonModal(props) {
 		<Modal transparent={true} visible={props.visible}>
 			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}>
 				<View style={styles.container} >
-						<FlatList
-							data={employees}
-							renderItem={({ item }) => (
-								<View style={{ flex: 1}}>
-									<PersonCard onPress={() => userPressedHandler(item.id)} editing={false} personData={item} />
-								</View>
-							)}
-							keyExtractor={item => item.id}
-						/>
+					<FlatList
+						data={employees}
+						renderItem={({ item }) => (
+							<View style={{ flex: 1 }}>
+								<PersonCard onPress={() => userPressedHandler(item.id)} editing={false} personData={item} />
+							</View>
+						)}
+						keyExtractor={item => item.id}
+					/>
 					<View style={styles.cancelButton}>
 						<Button onPress={props.onCancel} title="Done" />
 					</View>

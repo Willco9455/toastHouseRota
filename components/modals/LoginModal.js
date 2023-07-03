@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, StyleSheet, View, Button, Text, TextInput, KeyboardAvoidingView } from "react-native";
-import { getAdminPassword, getIsAdmin, hashCode, storeAdmin } from "../util/Security";
+import { getAdminPassword, getIsAdmin, hashCode, storeAdmin } from "../../util/Security";
 
 
 export default function LoginModal(props) {

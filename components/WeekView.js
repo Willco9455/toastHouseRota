@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ClearLocalDb, getShifts, getUsers } from "../util/dbHandler";
 import { RefreshControl, View, FlatList } from "react-native";
 import { getWeekFrom } from "../util/dateHelper";
-import { CreateShiftModal } from "./CreateShiftModal";
+import { CreateShiftModal } from "./modals/CreateShiftModal";
 
 export default function WeekView({monday, editing}) {
   let week = getWeekFrom(monday);
@@ -32,9 +32,8 @@ export default function WeekView({monday, editing}) {
   }
 
 
-
   return (
-    <View>
+    <View style={{flex: 1}}>
       <FlatList
         data={week}
         renderItem={day => {

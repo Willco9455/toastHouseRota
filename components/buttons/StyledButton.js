@@ -3,11 +3,10 @@ import { StyleSheet, Pressable, Text, View } from "react-native"
 export default function StyledButton({children, onPress, disabled}) {
 
 	return (
-		<View style={styles.buttonOuterContainer}>
+		<View>
 			<Pressable disabled={disabled} style={(pressData) => pressData.pressed ? [styles.buttonInnerContainer, styles.pressed] : styles.buttonInnerContainer}
 				onPress={onPress}
 			>
-				{/* the children thing below is the text put inbetween the primaryButton tags */}
 				<Text style={styles.buttonText}>{children}</Text>
 			</Pressable>
 		</View>
@@ -15,10 +14,6 @@ export default function StyledButton({children, onPress, disabled}) {
 }
 
 const styles = StyleSheet.create({
-	buttonOuterContainer: {
-		// overflow: 'hidden',
-		// elevation: 5,
-	},
 	buttonInnerContainer: {
 		borderRadius: 20,
 		paddingVertical: 5,
@@ -28,7 +23,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: 'black',
 		textAlign: 'center',
-		fontSize: 18,
+		fontSize: 16,
 		fontFamily: 'CourierPrimeBold'
 	},
 	pressed: {

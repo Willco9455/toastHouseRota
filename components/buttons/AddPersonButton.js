@@ -14,7 +14,6 @@ export default function AddPersonButton({ onPress }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // width: '95%',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,

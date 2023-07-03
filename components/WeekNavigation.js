@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import WeekView from './WeekView';
 import { addDays, getMonday } from '../util/dateHelper';
+import { useState } from 'react';
 
 const monday = getMonday();
 let maxWeek = addDays(monday, 14);
@@ -20,6 +20,8 @@ let routes = [
 
 export default function WeekNavigation({ editing }) {
 
+
+
   const renderScene = ({ route }) => {
     return <WeekView key={route.key} editing={editing} monday={route.key} />
   }
@@ -27,14 +29,14 @@ export default function WeekNavigation({ editing }) {
   const layout = useWindowDimensions();
 
   async function swipeHandler() {
-    console.log(index, routes.length)
     if (index >= (routes.length - 3)) {
-      maxWeek = addDays(maxWeek, 7)
+      maxWeek = await addDays(maxWeek, 7)
       routes.push({ key: maxWeek, title: 'extraEnd' })
     }
     oldIndex = index;
+
   }
-  const [index, setIndex] = React.useState(4);
+  const [index, setIndex] = useState(4);
 
   return (
     <TabView

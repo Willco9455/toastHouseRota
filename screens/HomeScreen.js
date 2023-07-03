@@ -1,42 +1,44 @@
-import { Button, FlatList, Image, Platform, SafeAreaView, StyleSheet, Text, View, RefreshControl } from "react-native";
+import { useState } from "react";
+import { Image, Platform, SafeAreaView, StyleSheet, View } from "react-native";
 
-import { useCallback, useState } from "react";
-import StyledButton from "../components/StyledButton";
+import { getIsAdmin, loadAdmin, revokeAdmin } from "../util/Security";
+import StyledButton from "../components//buttons/StyledButton";
 import WeekNavigation from "../components/WeekNavigation";
-import LoginModal from "../components/LoginModal";
-import { getIsAdmin, hashCode, loadAdmin, revokeAdmin } from "../util/Security";
+import LoginModal from "../components/modals/LoginModal";
 
+// 
 loadAdmin();
 
 // for getting a new password hash
 // console.log(hashCode('Admin'))
 
-function HomeScreen() {
+function HomeScreen({ refreshFromAppJS }) {
 	const [editing, setEditing] = useState(false);
 	const [admin, setAdmin] = useState(getIsAdmin())
 	const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-	function editButtonHandler() {
+	function editButtonPressHandler() {
 		setEditing(!editing)
 	}
 
-	function loginHandler() {
+	function openLoginHandler() {
 		setLoginModalVisible(true);
 	}
 
 	function onLoginModalClose() {
 		setLoginModalVisible(false);
+		refreshFromAppJS()
 	}
 
-	function logOutHandler() {
-		revokeAdmin();
+	async function logOutHandler() {
+		await revokeAdmin();
 		setAdmin(getIsAdmin())
+		refreshFromAppJS()
 	}
 
-	const loginButton = <StyledButton onPress={loginHandler}>Login</StyledButton>
+	const loginButton = <StyledButton onPress={openLoginHandler}>Login</StyledButton>
 	const logOutButton = <StyledButton onPress={logOutHandler}>Logout</StyledButton>
-	const editButton = <StyledButton disabled={!admin} onPress={editButtonHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
-
+	const editButton = <StyledButton disabled={!admin} onPress={editButtonPressHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
 
 	return (
 		<SafeAreaView style={styles.screenContainer}>
@@ -58,26 +60,24 @@ function HomeScreen() {
 const styles = StyleSheet.create({
 	screenContainer: {
 		flex: 1,
+		backgroundColor: 'white'
 	},
 	headerContainer: {
-		// backgroundColor: 'red',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginTop: Platform.OS === 'ios' ? 10 : 60,
+		marginTop: Platform.OS === 'ios' ? 10 : 20,
 		marginBottom: 20,
 	},
 	logo: {
 		resizeMode: 'contain',
 		alignItems: 'center',
 		justifyContent: 'center',
-		// width: '50%',
 		height: 40,
 		flex: 7
 	},
 	headerButton: {
 		flex: 5,
-		// backgroundColor: 'red'
 	}
 });
 

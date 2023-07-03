@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.5,
     borderRadius: 8,
-    elevation: 4,
+    elevation: 2,
     shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 1,
-    shadowOpacity: 0.20,
-    overflow: 'hidden'
+		shadowOffset: { width: 1, height: 2 },
+		shadowRadius: 1,
+		shadowOpacity: 0.1,
+    // overflow: 'hidden'
   },
 
 })

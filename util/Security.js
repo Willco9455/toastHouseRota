@@ -3,15 +3,14 @@ import firestore from '@react-native-firebase/firestore';
 
 let admin = false;
 
-export async function loadAdmin() {
-  // get admin status from local storage
+export async function loadAdmin() {// gets admin status from local storage
   try {
     const value = await AsyncStorage.getItem('admin');
     if (value === 'true') {
       admin = true;
     }
   } catch (e) {s
-    console.log('error reading value')
+    console.log('error reading admin from local')
   }
   return admin;
 }

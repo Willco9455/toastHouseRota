@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, Pressable, FlatList } from "react-native";
 import { addUserToDay, deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
-import AddPersonButton from "./AddPersonButton";
+import AddPersonButton from "./buttons/AddPersonButton";
+
 
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -98,10 +99,6 @@ const styles = StyleSheet.create({
 		padding: 5,
 		backgroundColor: 'white',
 		elevation: 10,
-		shadowColor: 'black',
-		shadowOffset: { width: 0, height: 2 },
-		shadowRadius: 1,
-		shadowOpacity: 0.20,
 	},
 	outerPeopleContainer: {
 		marginTop: 10,

@@ -1,3 +1,4 @@
+// gets the current moday
 export function getMonday() {
     d = new Date();
     var day = d.getDay(),
@@ -14,14 +15,17 @@ Date.prototype.addDays = function (days) {
 export function addDays(date, days) {
     return date.addDays(days);
 }
+
+// returns array of dateTime objects representing a week from the given date d
 export function getWeekFrom(d) {
 	let week = [d];
 	for (let i = 1; i < 7; i++) {
 		week.push(d.addDays(i))
 	}
+    week.shift();
+    week.pop();
 	return week;
 }
-
 
 // **
 //  * Returns the week number for this date.  dowOffset is the day of week the week

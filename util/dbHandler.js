@@ -14,7 +14,7 @@ export async function getUsers() {
   let tempUsers = [];
   await firestore().collection('users').get().then(querySnapshot => {
     querySnapshot.forEach(x => tempUsers.push({
-      id: x.data().id,
+      id: x.id,
       name: x.data().name,
       color: x.data().color
     }));
@@ -61,7 +61,6 @@ export function getPeopleFromDate(d) {
   return newResults
 }
 
-
 export function getUserColorById(id) {
   return users.find(x => x.id === id).color
 }
@@ -96,13 +95,28 @@ export async function addUserToDay(userId, date, timeSelected, starTime, endTime
   console.log('User added!');
 }
 
+export async function addUser(name, color) {
+  await firestore()
+    .collection('users')
+    .add({
+      name: name,
+      color: color
+    }).then((docRef) => {
+      users.push({
+        id: docRef.id,
+        name: name,
+        color: color
+      })
+    });
+  console.log('User added to user to table!');
+}
+
 export async function deleteRecordById(id) {
   await firestore()
     .collection('shifts')
     .doc(id)
     .delete()
     .catch((e) => {
-      console.log("ERROR HERE")
       console.log(e)
     })
     .then(() => {
@@ -110,6 +124,43 @@ export async function deleteRecordById(id) {
         return !(x.id === id)
       });
     });
+}
+
+export async function deleteUserById(id) {
+  await firestore()
+    .collection('users')
+    .doc(id)
+    .delete()
+    .catch((e) => {
+      console.log(e)
+    })
+    .then(() => {
+      users = users.filter(x => {
+        return !(x.id === id)
+      });
+    });
+  console.log('id ', id)
+
+  // Delete all shifts from database that are for the given user ID 
+  await firestore()
+    .collection('shifts')
+    .where('userId', '==', id)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log('Data ', doc.data())
+        doc.ref.delete();
+      });
+    })
+    .catch((e) => {
+      console.log('error')
+      console.log(e)
+    });
+
+  // remove shifts from loacal storage as well
+  db = db.filter(x => {
+    return !(x.userId === id)
+  })
 }
 
 export function sortShifts() {

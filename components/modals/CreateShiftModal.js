@@ -1,11 +1,10 @@
-import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid, ScrollView } from "react-native";
-import AddPersonButton from "./AddPersonButton";
-import { TimeSelectButton } from "./TimeSelectButton";
 import { useState } from "react";
-import AddPersonModal from "./AddPersonModal";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { addUserToDay, getUserById, sortShifts } from "../util/dbHandler";
+import { Button, Modal, Pressable, StyleSheet, Text, View, ToastAndroid } from "react-native";
 
+import { TimeSelectButton } from "../buttons/TimeSelectButton";
+import { addUserToDay, getUserById, sortShifts } from "../../util/dbHandler";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import AddPersonModal from "./AddPersonModal";
 
 let startTime = new Date();
 startTime.setHours(9, 0, 0, 0);
@@ -41,7 +40,6 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
     sortShifts();
     outerReload();
     ToastAndroid.show('Shift Added!', ToastAndroid.SHORT);
-    console.log('Added')
   }
 
   function amSelect() {
@@ -109,16 +107,19 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
           <Text style={styles.title}>Create Shift</Text>
-          <View style={{ flexDirection: 'column'}}>
+          <View style={{ flexDirection: 'column' }}>
             <View style={styles.userSelectContainer}>
-              <TimeSelectButton backgroundColor={'white'} onPress={selectEmployeeHandler}>{selectedUser ? selectedUser.name : 'Select User'}</TimeSelectButton>
+              <TimeSelectButton
+                backgroundColor={selectedUser ? selectedUser.color : 'white'}
+                onPress={selectEmployeeHandler}>{selectedUser ? selectedUser.name : 'Select User'}
+              </TimeSelectButton>
             </View>
             {/* <ScrollView horizontal={true}> */}
-              <View style={styles.timeSelectContainer}>
-                <TimeSelectButton onPress={amSelect} highlighted={(timeSelected === 'am')}>AM</TimeSelectButton>
-                <TimeSelectButton onPress={pmSelect} highlighted={(timeSelected === 'pm')}>PM</TimeSelectButton>
-                <TimeSelectButton onPress={fullDaySelect} highlighted={(timeSelected === 'fullDay')}>Full Day</TimeSelectButton>
-              </View>
+            <View style={styles.timeSelectContainer}>
+              <TimeSelectButton onPress={amSelect} highlighted={(timeSelected === 'am')}>AM</TimeSelectButton>
+              <TimeSelectButton onPress={pmSelect} highlighted={(timeSelected === 'pm')}>PM</TimeSelectButton>
+              <TimeSelectButton onPress={fullDaySelect} highlighted={(timeSelected === 'fullDay')}>Full Day</TimeSelectButton>
+            </View>
             {/* </ScrollView> */}
             <View style={styles.customTimeSelcector}>
               <TimeSelectButton onPress={customSelect} highlighted={(timeSelected === 'custom')}>Custom</TimeSelectButton>
@@ -176,8 +177,8 @@ const styles = StyleSheet.create({
   timeSelectContainer: {
     flexDirection: 'row',
     marginBottom: 10,
-    flexWrap: 'wrap'
-
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
   },
   customTimeSelcector: {
     flexDirection: 'column',
