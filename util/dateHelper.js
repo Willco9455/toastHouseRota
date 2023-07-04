@@ -11,6 +11,18 @@ export function addDays(date, days) {
     return date.addDays(days);
 }
 
+export function get24Hour(dateTime) {
+    let hours = dateTime.getHours().toString()
+    let mins = dateTime.getMinutes().toString()
+    if (hours.length === 1) {
+      hours = '0' + hours
+    }
+    if (mins.length === 1) {
+      mins = '0' + mins
+    }
+    return hours + ':' + mins
+  }
+
 // returns array of dateTime objects representing a week from the given date d
 export function getWeekFrom(d) {
     let week = [d];

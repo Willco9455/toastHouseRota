@@ -4,6 +4,7 @@ import { getShifts, getShiftsWeb, getUsers, getUsersWeb } from "../util/dbHandle
 import { RefreshControl, View, FlatList, Platform, ScrollView, Button, StyleSheet } from "react-native";
 import { addDays, addMonthsToDate, getMonday, getMondaysFromDate, getWeekFrom } from "../util/dateHelper";
 import { CreateShiftModal } from "./modals/CreateShiftModal";
+import AppHeader from "./AppHeader";
 
 const today = new Date();
 let date = today
@@ -20,7 +21,7 @@ function getWeeks(date) {
   return tempWeeks
 }
 
-export default function MonthView({ editing }) {
+export default function MonthView({ setEditing, editing }) {
   const [showModal, setShowModal] = useState(false);
   const [dateEditing, setDateEditing] = useState(null);
   const [reload, setReload] = useState(false);
@@ -46,14 +47,12 @@ export default function MonthView({ editing }) {
 
   return (
     <>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'center' }}>
-        <View style={styles.buttonContainer}>
-          <Button onPress={lastMonthHandler} title={'<'} />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button onPress={nextMonthHandler} title={'>'} />
-        </View>
-      </View>
+      <AppHeader
+        nextMonthHandler={nextMonthHandler} 
+        lastMonthHandler={lastMonthHandler}
+        setEditing={setEditing}
+        editing={editing}
+      />
       <ScrollView style={{ flex: 1 }}>
         <View>
           <FlatList
@@ -79,9 +78,21 @@ export default function MonthView({ editing }) {
 }
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    zIndex: 1,
-    
-    // position: 'absolute',
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: Platform.OS === 'ios' ? 10 : 20,
+    marginBottom: 20,
+  },
+  logo: {
+    resizeMode: 'contain',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    flex: 7
+  },
+  headerButton: {
+    flex: 5,
   }
 }) 

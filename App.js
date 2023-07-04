@@ -10,7 +10,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getIsAdmin } from './util/Security';
 import HomeScreen from './screens/HomeScreen';
+import {Dimensions} from 'react-native';
 
+const windowWidth = Dimensions.get('window').width;
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -19,6 +21,7 @@ export default function App() {
     'CourierPrime': require('./assets/fonts/CourierPrime-Regular.ttf'),
     'CourierPrimeBold': require('./assets/fonts/CourierPrime-Bold.ttf')
   });
+
 
   // allows refresh from within child elements refreshFromAppJS passed as prop
   const [refresh, setRefresh] = useState(false)
@@ -81,7 +84,7 @@ export default function App() {
   function renderMain() {
     if (!serverLoaded) {
       return <LoadingScreen />
-    } else if (getIsAdmin() && !(Platform.OS === 'web')) {
+    } else if (getIsAdmin() && !(Platform.OS === 'web' && windowWidth > 700)) {
       return adminHome
     } else {
       return <HomeScreen refreshFromAppJS={refreshFromAppJS} />

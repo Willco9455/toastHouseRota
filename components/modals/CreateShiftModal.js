@@ -5,6 +5,7 @@ import { TimeSelectButton } from "../buttons/TimeSelectButton";
 import { addUserToDay, getUserById, sortShifts } from "../../util/dbHandler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AddPersonModal from "./AddPersonModal";
+import { get24Hour } from "../../util/dateHelper";
 
 
 let startTime = new Date();
@@ -120,10 +121,10 @@ export function CreateShiftModal({ onCancel, visible, date, outerReload }) {
   } else {
     customTimeSelector = <View style={styles.timePickerContainer}>
       <Pressable onPress={selectStartTime}>
-        <Text style={styles.timeText}>{startTime.toLocaleString('en-GB').slice(12, 17)} - </Text>
+        <Text style={styles.timeText}>{ get24Hour(startTime)} - </Text>
       </Pressable>
       <Pressable onPress={selectEndTime}>
-        <Text style={styles.timeText}>{endTime.toLocaleString('en-GB').slice(12, 17)}</Text>
+        <Text style={styles.timeText}>{get24Hour(endTime)}</Text>
       </Pressable>
     </View>
   }

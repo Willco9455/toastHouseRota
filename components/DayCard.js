@@ -3,7 +3,9 @@ import { View, StyleSheet, Text, Button, Pressable, FlatList, Platform } from "r
 import { addUserToDay, deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 import AddPersonButton from "./buttons/AddPersonButton";
+import {Dimensions} from 'react-native';
 
+const mobileSize = (Dimensions.get('window').width < 700)
 
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -99,8 +101,7 @@ const styles = StyleSheet.create({
 		borderTopWidth: 2,
 		borderColor: 'black',
 		padding: 5,
-		elevation: 10,
-		borderRightWidth: Platform.OS =='web' ? 2 : 0,
+		borderRightWidth: (Platform.OS =='web' && !mobileSize)  ? 2 : 0,
 	},
 	outerPeopleContainer: {
 		marginTop: 10,
@@ -117,13 +118,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	dayText: {
-		fontSize: Platform.OS =='web' ? 14 : 18,
+		fontSize: (Platform.OS =='web' && !mobileSize) ? 14 : 18,
 		marginLeft: 2,
 		color: 'grey',
 		fontFamily: 'CourierPrime'
 	},
 	dateText: {
-		fontSize: Platform.OS =='web' ? 14 : 18,
+		fontSize: (Platform.OS =='web' && !mobileSize)? 14 : 18,
 		marginLeft: 10,
 		color: 'grey',
 		fontFamily: 'CourierPrime'

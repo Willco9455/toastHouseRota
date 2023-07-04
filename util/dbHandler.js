@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, getFirestore, query, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, getFirestore, query, doc, setDoc, deleteDoc, where } from "firebase/firestore";
 import { Platform } from "react-native";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -210,9 +210,9 @@ export async function addUser(name, color) {
 export async function deleteRecordById(id) {
   if (Platform.OS === 'web') {
     await deleteDoc(doc(db, "shifts", id)).catch((e) => {
-        console.log(e)
-        return
-      });
+      console.log(e)
+      return
+    });
     shifts = shifts.filter(x => {
       return !(x.id === id)
     });
@@ -234,36 +234,57 @@ export async function deleteRecordById(id) {
 }
 
 export async function deleteUserById(id) {
-  await firestore()
-    .collection('users')
-    .doc(id)
-    .delete()
-    .catch((e) => {
+  if (Platform.OS === 'web') {
+    await deleteDoc(doc(db, "users", id)).catch((e) => {
       console.log(e)
-    })
-    .then(() => {
-      users = users.filter(x => {
-        return !(x.id === id)
-      });
+      return
     });
+    users = users.filter(x => {
+      return !(x.id === id)
+    });
+  } else {
+    await firestore()
+      .collection('users')
+      .doc(id)
+      .delete()
+      .catch((e) => {
+        console.log(e)
+      })
+      .then(() => {
+        users = users.filter(x => {
+          return !(x.id === id)
+        });
+      });
+  }
   console.log('id ', id)
 
   // Delete all shifts from database that are for the given user ID 
-  await firestore()
-    .collection('shifts')
-    .where('userId', '==', id)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log('Data ', doc.data())
-        doc.ref.delete();
-      });
-    })
-    .catch((e) => {
-      console.log('error')
-      console.log(e)
+  if (Platform.OS === 'web') {
+    const usersRef = collection(db, "shifts");
+    const q = query(usersRef, where('userId', '==', id));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      console.log('Deleting ', doc.data());
+      deleteDoc(doc);
+      // doc.ref.delete();
     });
 
+  } else {
+    await firestore()
+      .collection('shifts')
+      .where('userId', '==', id)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log('Data ', doc.data())
+          doc.ref.delete();
+        });
+      })
+      .catch((e) => {
+        console.log('error')
+        console.log(e)
+      });
+  }
   // remove shifts from loacal storage as well
   shifts = shifts.filter(x => {
     return !(x.userId === id)

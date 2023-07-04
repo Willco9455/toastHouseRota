@@ -1,59 +1,30 @@
 import { useState } from "react";
 import { Image, Platform, SafeAreaView, StyleSheet, View } from "react-native";
-
 import { getIsAdmin, loadAdmin, revokeAdmin } from "../util/Security";
 import StyledButton from "../components//buttons/StyledButton";
 import WeekNavigation from "../components/WeekNavigation";
-import LoginModal from "../components/modals/LoginModal";
 import MonthView from "../components/MonthView";
+import { Dimensions } from 'react-native';
 
+const windowWidth = Dimensions.get('window').width;
 loadAdmin();
-
 // for getting a new password hash
 // console.log(hashCode('Admin'))
 
+
 function HomeScreen({ refreshFromAppJS }) {
-	const [editing, setEditing] = useState(false);
-	const [admin, setAdmin] = useState(getIsAdmin())
-	const [loginModalVisible, setLoginModalVisible] = useState(false);
+	const [editing, setEditing] = useState(false)
 
-	function editButtonPressHandler() {
-		setEditing(!editing)
+	const homeScreenSelect = () => {
+		if (Platform.OS === 'web' && windowWidth > 700) {
+			return <MonthView setEditing={setEditing} editing={editing} />
+		} else {
+			return <WeekNavigation setEditing={setEditing} editing={editing} />
+		}
 	}
-
-	function openLoginHandler() {
-		setLoginModalVisible(true);
-	}
-
-	function onLoginModalClose() {
-		setLoginModalVisible(false);
-		refreshFromAppJS()
-	}
-
-	async function logOutHandler() {
-		await revokeAdmin();
-		setAdmin(getIsAdmin())
-		refreshFromAppJS()
-	}
-
-
-	const loginButton = <StyledButton onPress={openLoginHandler}>Login</StyledButton>
-	const logOutButton = <StyledButton onPress={logOutHandler}>Logout</StyledButton>
-	const editButton = <StyledButton disabled={!admin} onPress={editButtonPressHandler}>{editing ? 'Done' : 'Edit'}</StyledButton>
-
 	return (
 		<SafeAreaView style={styles.screenContainer}>
-			<View style={styles.headerContainer}>
-				<View style={styles.headerButton}>
-					{admin ? logOutButton : loginButton}
-				</View>
-				<Image style={styles.logo} source={require('../assets/images/toastHouseLogo.png')} />
-				<View style={styles.headerButton}>
-					{admin ? editButton : null}
-				</View>
-			</View>
-			{(Platform.OS === 'web') ? <MonthView editing={editing}/> : <WeekNavigation editing={editing} />}
-			<LoginModal setAdmin={setAdmin} onClose={onLoginModalClose} visible={loginModalVisible} />
+			{homeScreenSelect()}
 		</SafeAreaView>
 	);
 }

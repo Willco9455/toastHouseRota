@@ -64,7 +64,7 @@ export function ManageEmployeesScreen() {
           <Button onPress={onAddUser} title="Add" />
         </View>
       </View>
-      <View style={{ maxHeight: '50%' }}>
+      <View style={{ maxHeight: '70%' }}>
         <FlatList
           data={employees}
           renderItem={({ item }) => (
@@ -90,7 +90,8 @@ export function ManageEmployeesScreen() {
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    justifyContent: 'center',
+    paddingTop: '10%',
+    // justifyContent: 'center',
     paddingHorizontal: 20,
     backgroundColor: 'white',
   },
@@ -111,7 +112,8 @@ const styles = StyleSheet.create({
     width: 70,
     flex: 1,
     borderRadius: 5,
-    marginRight: 10
+    marginRight: 10,
+    minHeight: 30
   },
   buttonContainer: {
     flexDirection: 'row',
