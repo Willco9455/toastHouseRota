@@ -12,7 +12,7 @@ loadAdmin();
 // console.log(hashCode('Admin'))
 
 
-function HomeScreen({ refreshFromAppJS }) {
+function HomeScreen() {
 	const [editing, setEditing] = useState(false)
 
 	const homeScreenSelect = () => {

@@ -10,7 +10,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getIsAdmin } from './util/Security';
 import HomeScreen from './screens/HomeScreen';
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const windowWidth = Dimensions.get('window').width;
 const Tab = createBottomTabNavigator();
@@ -86,11 +87,28 @@ export default function App() {
       return <LoadingScreen />
     } else if (getIsAdmin() && !(Platform.OS === 'web' && windowWidth > 700)) {
       return adminHome
-    } else {
-      return <HomeScreen refreshFromAppJS={refreshFromAppJS} />
+    } else { // when on web with laptop screen - renders month view
+      return (
+        <Stack.Navigator screenOptions={{ headerShown: false }} >
+          <Stack.Screen name="Toast House Rota" component={HomeScreen} />
+        </Stack.Navigator>
+      )
     }
   }
 
+
+  const Stack = createStackNavigator();
+
+  function MyStack() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Settings" component={Settings} />
+      </Stack.Navigator>
+    );
+  }
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
