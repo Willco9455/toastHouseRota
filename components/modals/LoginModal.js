@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   passwordInput: {
     height: 50,
     minWidth: '60%',
-    maxWidth: '80%',
     fontSize: 16,
     margin: 12,
     borderWidth: 1,
