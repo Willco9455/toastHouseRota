@@ -2,7 +2,7 @@ import { Button, Modal, View } from "react-native";
 import ColorPicker from 'react-native-wheel-color-picker'
 
 let currentColor =  '#16fe03'
-export function ColorPickerModal({ vivible, setColor }) {
+export function ColorPickerModal({ vivible, setColor, cancelColorPicker }) {
 
   return (
     <Modal visible={vivible}>
@@ -21,8 +21,9 @@ export function ColorPickerModal({ vivible, setColor }) {
           swatchesHitSlop={10}
         />
       </View>
-      <View style={{alignItems: 'center', marginBottom: 60}}>
-        <Button onPress={() => setColor(currentColor)} title="Done" />
+      <View style={{alignItems: 'center', marginBottom: 60, flexDirection: 'row', justifyContent: 'space-around'}}>
+        <Button onPress={cancelColorPicker} color={'red'} title="Cancel" />
+        <Button onPress={() => setColor(currentColor)} title="Select" />
       </View>
     </Modal>
   );

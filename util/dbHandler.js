@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, getFirestore, query, doc, setDoc, deleteDoc, where } from "firebase/firestore";
+import { collection, getDocs, getFirestore, query, doc, setDoc, deleteDoc, where, updateDoc } from "firebase/firestore";
 import { Platform } from "react-native";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -263,12 +263,9 @@ export async function deleteUserById(id) {
     const usersRef = collection(db, "shifts");
     const q = query(usersRef, where('userId', '==', id));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log('Deleting ', doc.data());
-      deleteDoc(doc);
-      // doc.ref.delete();
+    querySnapshot.forEach(async (doc) => {
+      await deleteRecordById(doc.ref.id)
     });
-
   } else {
     await firestore()
       .collection('shifts')
@@ -276,7 +273,7 @@ export async function deleteUserById(id) {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log('Data ', doc.data())
+          // console.log('Data ', doc.data())
           doc.ref.delete();
         });
       })
@@ -289,6 +286,31 @@ export async function deleteUserById(id) {
   shifts = shifts.filter(x => {
     return !(x.userId === id)
   })
+}
+
+export async function updateUserColor(usrId, newColor) {
+  if (Platform.OS === 'web') {
+    let userRef = doc(db, 'users', usrId)
+    await updateDoc(userRef, {
+      color: newColor
+    });
+
+  } else {
+    await firestore()
+      .collection('users')
+      .doc(usrId)
+      .update({
+        color: newColor,
+      })
+      .then(() => {
+        objIndex = users.findIndex((obj => obj.id == usrId));
+        users[objIndex].color = newColor;
+        console.log('User Updated');
+      });
+  }
+  let objIndex = users.findIndex((obj => obj.id == usrId));
+  users[objIndex].color = newColor;
+  console.log('User Updated');
 }
 
 export function sortShifts() {

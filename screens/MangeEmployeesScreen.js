@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { StyleSheet, Text, View, FlatList, Button, TextInput, Pressable, Alert, ToastAndroid } from "react-native";
-import { addUser, deleteUserById, getEmployees } from "../util/dbHandler";
+import { addUser, deleteUserById, getEmployees, updateUserColor } from "../util/dbHandler";
 import { Ionicons } from '@expo/vector-icons';
 import PersonCard from "../components/PersonCard";
-import {ColorPickerModal} from "../components/modals/ColorPickerModal";
+import { ColorPickerModal } from "../components/modals/ColorPickerModal";
 
-
+let editingUserColor = false;
+let userEditing = '';
 
 export function ManageEmployeesScreen() {
   const [employees, setEmployees] = useState(getEmployees())
@@ -18,9 +19,27 @@ export function ManageEmployeesScreen() {
     SetColorPickerVisible(true)
   }
 
-  function setColor(color) {
-    setCurrentColor(color);
+  function openColorPickerNewUser() {
+    editingUserColor = false
+    showColourPicker()
+  }
+
+  function openColorPickerEditUser(usrId) {
+    editingUserColor = true
+    userEditing = usrId
+    showColourPicker()
+  }
+
+
+  async function setColor(color) {
+    if (editingUserColor) {
+      await updateUserColor(userEditing, color)
+    } else {
+      setCurrentColor(color);
+    }
     SetColorPickerVisible(false)
+    setRefresh(!refresh);
+    console.log('refreshed')
   }
 
   async function deleteUserHandler(id) {
@@ -31,6 +50,10 @@ export function ManageEmployeesScreen() {
 
   function textChangeHandler(text) {
     setEnteredName(text)
+  }
+
+  function cancelColorPicker() {
+    SetColorPickerVisible(false)
   }
 
   async function onAddUser() {
@@ -57,7 +80,7 @@ export function ManageEmployeesScreen() {
         <View style={styles.buttonContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'CourierPrime', fontSize: 16, paddingLeft: 4 }}>Colour: </Text>
-            <Pressable onPress={showColourPicker}>
+            <Pressable onPress={openColorPickerNewUser}>
               <View style={[styles.colorSelectButton, { backgroundColor: currentColor }]}></View>
             </Pressable>
           </View>
@@ -72,6 +95,9 @@ export function ManageEmployeesScreen() {
               <View style={{ flex: 4 }}>
                 <PersonCard editing={false} personData={item} />
               </View>
+              <Pressable style={styles.editUserColorContainer} onPress={() => openColorPickerEditUser(item.id)}>
+                <View style={[styles.colorSelectButton, { backgroundColor: item.color }]}></View>
+              </Pressable>
               <View style={{ marginLeft: 10 }}>
                 <Pressable onPress={() => deleteUserHandler(item.id)}>
                   <Ionicons color={'grey'} size={30} name="trash-sharp"></Ionicons>
@@ -82,7 +108,7 @@ export function ManageEmployeesScreen() {
           keyExtractor={item => item.id}
         />
       </View>
-      <ColorPickerModal setColor={setColor} vivible={colorPickerVivible} />
+      <ColorPickerModal cancelColorPicker={cancelColorPicker} setColor={setColor} vivible={colorPickerVivible} />
     </View>
   );
 }
@@ -128,8 +154,13 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     elevation: 3,
     shadowColor: 'black',
-		shadowOffset: { width: 1, height: 2 },
-		shadowRadius: 1,
-		shadowOpacity: 0.2,
+    shadowOffset: { width: 1, height: 2 },
+    shadowRadius: 1,
+    shadowOpacity: 0.2,
+  },
+  editUserColorContainer: {
+    flex: 1,
+    marginHorizontal: 6,
+    marginVertical: 4
   }
 });

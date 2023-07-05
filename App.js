@@ -8,30 +8,27 @@ import { ManageEmployeesScreen } from './screens/MangeEmployeesScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { getIsAdmin } from './util/Security';
+import { getIsAdmin, loadAdmin } from './util/Security';
 import HomeScreen from './screens/HomeScreen';
 import { Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { LaptopScreen } from './screens/LaptopScreen';
+
 
 const windowWidth = Dimensions.get('window').width;
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [admin, setAdmin] = useState(getIsAdmin())
   const [serverLoaded, setServerLoaded] = useState(false)
   const [fontsLoaded] = useFonts({
     'CourierPrime': require('./assets/fonts/CourierPrime-Regular.ttf'),
     'CourierPrimeBold': require('./assets/fonts/CourierPrime-Bold.ttf')
   });
 
-
-  // allows refresh from within child elements refreshFromAppJS passed as prop
-  const [refresh, setRefresh] = useState(false)
-  function refreshFromAppJS() {
-    setRefresh(!refresh)
-  }
-
+  // waits for fonts to be loaded and then loads the date from the server 
   async function loadServer() {
-    if (!serverLoaded) {
+    if (fontsLoaded && !serverLoaded) {
       if (Platform.OS === 'web') {
         await getUsersWeb();
         await getShiftsWeb();
@@ -39,15 +36,13 @@ export default function App() {
         await getUsers();
         await getShifts();
       }
-      console.log('data loaded ')
+      await loadAdmin();
       setServerLoaded(true);
+      setAdmin(getIsAdmin())
     }
   }
 
-  // waits for fonts to be loaded before fetching data from server
-  if (fontsLoaded) {
-    loadServer()
-  }
+  loadServer();
 
   // defines how home screen will look when logged in as admin
   let adminHome =
@@ -63,20 +58,20 @@ export default function App() {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#cf82ac',
+        tabBarActiveTintColor: '#c13eed',
         tabBarInactiveTintColor: 'gray',
         tabBarLabelStyle: {
-          fontSize: 14,
+          fontSize: 12,
           fontFamily: 'CourierPrime',
         },
         tabBarStyle: {
-          height: '7%',
+          height: '8%',
           paddingBottom: 8,
         },
         tabBarHideOnKeyboard: true,
       })}
     >
-      <Tab.Screen name="Home" children={() => <HomeScreen refreshFromAppJS={refreshFromAppJS} />} />
+      <Tab.Screen name="Home" children={() => <HomeScreen admin={admin} setAdmin={setAdmin} />} />
       <Tab.Screen name="Manage Employees" component={ManageEmployeesScreen} />
     </Tab.Navigator>
 
@@ -85,30 +80,25 @@ export default function App() {
   function renderMain() {
     if (!serverLoaded) {
       return <LoadingScreen />
-    } else if (getIsAdmin() && !(Platform.OS === 'web' && windowWidth > 700)) {
+    } else if (admin && !(Platform.OS === 'web' && windowWidth > 700)) {
       return adminHome
-    } else { // when on web with laptop screen - renders month view
+    } else if (!admin  && !(Platform.OS === 'web' && windowWidth > 700)) { 
+      console.log('in HERE?')
       return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} >
-          <Stack.Screen name="Toast House Rota" component={HomeScreen} />
-        </Stack.Navigator>
+        <HomeScreen admin={admin} setAdmin={setAdmin} />
+        )
+    } else {
+      return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Toast House Rota" children={() => <LaptopScreen admin={admin} setAdmin={setAdmin} />} />
+      </Stack.Navigator>
       )
     }
   }
-
-
   const Stack = createStackNavigator();
 
-  function MyStack() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Notifications" component={Notifications} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Settings" component={Settings} />
-      </Stack.Navigator>
-    );
-  }
+
+
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>

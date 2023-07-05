@@ -1,8 +1,7 @@
 import DayCard from "../components/DayCard";
-import { useEffect, useState } from "react";
-import { getShifts, getShiftsWeb, getUsers, getUsersWeb } from "../util/dbHandler";
-import { RefreshControl, View, FlatList, Platform, ScrollView, Button, StyleSheet } from "react-native";
-import { addDays, addMonthsToDate, getMonday, getMondaysFromDate, getWeekFrom } from "../util/dateHelper";
+import { useState } from "react";
+import { View, FlatList, Platform, ScrollView, StyleSheet } from "react-native";
+import { addDays, getMonday, getWeekFrom } from "../util/dateHelper";
 import { CreateShiftModal } from "./modals/CreateShiftModal";
 import AppHeader from "./AppHeader";
 
@@ -21,7 +20,7 @@ function getWeeks(date) {
   return tempWeeks
 }
 
-export default function MonthView({ setEditing, editing }) {
+export default function MonthView({ admin, setAdmin, setEditing, editing, setScreen}) {
   const [showModal, setShowModal] = useState(false);
   const [dateEditing, setDateEditing] = useState(null);
   const [reload, setReload] = useState(false);
@@ -48,10 +47,13 @@ export default function MonthView({ setEditing, editing }) {
   return (
     <>
       <AppHeader
-        nextMonthHandler={nextMonthHandler} 
+        nextMonthHandler={nextMonthHandler}
         lastMonthHandler={lastMonthHandler}
         setEditing={setEditing}
         editing={editing}
+        admin={admin}
+        setAdmin={setAdmin}
+        setScreen={setScreen}
       />
       <ScrollView style={{ flex: 1 }}>
         <View>
@@ -71,7 +73,6 @@ export default function MonthView({ setEditing, editing }) {
           />
         </View >
       </ScrollView >
-
       <CreateShiftModal outerReload={() => setReload(!reload)} date={dateEditing} visible={showModal} onCancel={hideCreateShift} />
     </>
   );

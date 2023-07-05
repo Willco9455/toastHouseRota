@@ -19,9 +19,7 @@ let routes = [
   { key: addDays(monday, 14), title: 'endFurther' },
 ]
 
-export default function WeekNavigation({ setEditing ,editing }) {
-
-
+export default function WeekNavigation({ admin, setAdmin, setEditing ,editing }) {
   const renderScene = ({ route }) => {
     return <WeekView key={route.key} editing={editing} monday={route.key} />
   }
@@ -40,7 +38,7 @@ export default function WeekNavigation({ setEditing ,editing }) {
 
   return (
     <>
-      <AppHeader setEditing={setEditing} editing={editing}/>
+      <AppHeader admin={admin} setAdmin={setAdmin} setEditing={setEditing} editing={editing}/>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

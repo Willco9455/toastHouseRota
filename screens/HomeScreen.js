@@ -7,24 +7,15 @@ import MonthView from "../components/MonthView";
 import { Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
-loadAdmin();
 // for getting a new password hash
 // console.log(hashCode('Admin'))
 
 
-function HomeScreen() {
+function HomeScreen(props) {
 	const [editing, setEditing] = useState(false)
-
-	const homeScreenSelect = () => {
-		if (Platform.OS === 'web' && windowWidth > 700) {
-			return <MonthView setEditing={setEditing} editing={editing} />
-		} else {
-			return <WeekNavigation setEditing={setEditing} editing={editing} />
-		}
-	}
 	return (
 		<SafeAreaView style={styles.screenContainer}>
-			{homeScreenSelect()}
+			<WeekNavigation admin={props.admin} setAdmin={props.setAdmin} setEditing={setEditing} editing={editing} />
 		</SafeAreaView>
 	);
 }
