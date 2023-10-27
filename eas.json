@@ -3,6 +3,12 @@
     "preview": {
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "ANDROID_SDK_ROOT": "/Users/willmoran/Library/Android/sdk"
       }
     },
     "preview2": {
@@ -12,7 +18,9 @@
     },
     "preview3": {
       "developmentClient": true
-    },
-    "production": {}
+    }
+  },
+  "cli": {
+    "version": "^3.16.0"
   }
 }

@@ -19,12 +19,14 @@ let routes = [
   { key: addDays(monday, 14), title: 'endFurther' },
 ]
 
-export default function WeekNavigation({ admin, setAdmin, setEditing ,editing }) {
+
+export default function WeekNavigation({ admin, setAdmin, setEditing, editing }) {
+  const [index, setIndex] = useState(4);
+  const layout = useWindowDimensions();
+  
   const renderScene = ({ route }) => {
     return <WeekView key={route.key} editing={editing} monday={route.key} />
   }
-
-  const layout = useWindowDimensions();
 
   async function swipeHandler() {
     if (index >= (routes.length - 3)) {
@@ -34,7 +36,6 @@ export default function WeekNavigation({ admin, setAdmin, setEditing ,editing })
     oldIndex = index;
 
   }
-  const [index, setIndex] = useState(4);
 
   return (
     <>

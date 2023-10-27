@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { Image, Platform, SafeAreaView, StyleSheet, View } from "react-native";
-import { getIsAdmin, loadAdmin, revokeAdmin } from "../util/Security";
-import StyledButton from "../components//buttons/StyledButton";
+import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import WeekNavigation from "../components/WeekNavigation";
-import MonthView from "../components/MonthView";
 import { Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;

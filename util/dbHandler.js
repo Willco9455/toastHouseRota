@@ -2,9 +2,8 @@ import firestore from '@react-native-firebase/firestore';
 import { initializeApp } from "firebase/app";
 import { collection, getDocs, getFirestore, query, doc, setDoc, deleteDoc, where, updateDoc } from "firebase/firestore";
 import { Platform } from "react-native";
-import firebase from "firebase/app";
 import "firebase/firestore";
-
+import { addDays, getMonday } from './dateHelper';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -59,9 +58,33 @@ export async function getUsers() {
   users = [...tempUsers];
 }
 
-export async function getShifts() {
+export async function getShiftsWeek(monday) { // Get week of shifts from a given monday
+  
+  weekEnd = addDays(monday, 5)
   let tempShifts = [];
-  await firestore().collection('shifts').get().then(querySnapshot => {
+  await firestore().collection('shifts').where('date', '>=', monday).where('date', '<=', weekEnd).get().then(querySnapshot => {
+    querySnapshot.forEach(x => tempShifts.push({
+      id: x.id,
+      date: x.data().date.toDate(),
+      timeSelected: x.data().timeSelected,
+      startTime: x.data().startTime.toDate(),
+      endTime: x.data().endTime.toDate(),
+      userId: x.data().userId,
+    }));
+  }).catch(error => {
+    console.log("Server Error")
+  })
+  console.log('New Shifts ' ,tempShifts)
+  shifts = [...shifts, ...tempShifts]
+  shifts.sort(compare);
+}
+
+export async function getShifts() {
+  const today = new Date();
+  dateLimit = addDays(getMonday(today), -7)
+
+  let tempShifts = [];
+  await firestore().collection('shifts').where('date', '>=', dateLimit).get().then(querySnapshot => {
     querySnapshot.forEach(x => tempShifts.push({
       id: x.id,
       date: x.data().date.toDate(),
@@ -79,7 +102,7 @@ export async function getShifts() {
 
 //fetches all the users from the database different firebase config for web
 export async function getUsersWeb() {
-  // return 
+  // return
   let tempUsers = [];
   let querySnapshot = await getDocs(query(collection(db, "users")));
   querySnapshot.forEach(x => tempUsers.push({
@@ -104,6 +127,7 @@ export async function getShiftsWeb() {
   }));
   shifts = [...tempShifts]
   shifts.sort(compare);
+  console.log('shifts fetched')
 }
 
 

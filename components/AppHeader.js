@@ -84,13 +84,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: Platform.OS === 'ios' ? 10 : 20,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   logo: {
     resizeMode: 'contain',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
+    // backgroundColor: 'red',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    height: 35,
     flex: 7
   },
   headerButton: {

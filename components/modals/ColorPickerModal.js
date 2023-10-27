@@ -1,7 +1,7 @@
 import { Button, Modal, View } from "react-native";
 import ColorPicker from 'react-native-wheel-color-picker'
 
-let currentColor =  '#16fe03'
+let currentColor =  '#eefded'
 export function ColorPickerModal({ vivible, setColor, cancelColorPicker }) {
 
   return (

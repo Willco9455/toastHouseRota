@@ -11,7 +11,7 @@ let userEditing = '';
 export function ManageEmployeesScreen() {
   const [employees, setEmployees] = useState(getEmployees())
   const [colorPickerVivible, SetColorPickerVisible] = useState(false);
-  const [currentColor, setCurrentColor] = useState('#16fe03')
+  const [currentColor, setCurrentColor] = useState('#c3febe')
   const [enteredName, setEnteredName] = useState('')
   const [refresh, setRefresh] = useState(false)
 
@@ -43,9 +43,27 @@ export function ManageEmployeesScreen() {
   }
 
   async function deleteUserHandler(id) {
-    await deleteUserById(id);
+    // await deleteUserById(id);
     setEmployees(getEmployees());
-    ToastAndroid.show('Employee Deleted!', ToastAndroid.SHORT);
+    Alert.alert(
+      'Deleting Employee',
+      'Deleting an employee will remove all shifts with this employee, are you sure?',
+      [
+        {
+          text: 'cancel',
+          onPress: () => console.log('Cancel'),
+          style: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          onPress: async () => {
+            await deleteUserById(id);
+            ToastAndroid.show('Employee Deleted!', ToastAndroid.SHORT);
+            setEmployees(getEmployees())
+          }
+        }
+      ]
+    );
   }
 
   function textChangeHandler(text) {

@@ -14,7 +14,6 @@ import { Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { LaptopScreen } from './screens/LaptopScreen';
 
-
 const windowWidth = Dimensions.get('window').width;
 const Tab = createBottomTabNavigator();
 

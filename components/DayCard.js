@@ -3,14 +3,21 @@ import { View, StyleSheet, Text, Button, Pressable, FlatList, Platform } from "r
 import { addUserToDay, deleteRecordById, getPeopleFromDate, getUserById } from "../util/dbHandler";
 import PersonCard from "./PersonCard";
 import AddPersonButton from "./buttons/AddPersonButton";
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
 const mobileSize = (Dimensions.get('window').width < 700)
+const today = new Date()
 
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June",
 	"July", "August", "September", "October", "November", "December"
 ];
+
+function sameDay(d1, d2) {
+	return d1.getFullYear() === d2.getFullYear() &&
+		d1.getMonth() === d2.getMonth() &&
+		d1.getDate() === d2.getDate();
+}
 
 export default function DayCard({ date, editing, showCreateShift, setDateEditing }) {
 	const [reload, setReload] = useState(false);
@@ -57,10 +64,15 @@ export default function DayCard({ date, editing, showCreateShift, setDateEditing
 	return (
 		<View style={styles.outerContainer}>
 			<View style={styles.innerContainer}>
-				<View style={styles.dateContainer}>
-					<Text style={styles.dayText} >{weekday[date.item.getDay()]}</Text>
-					<Text style={styles.dateText} >{date.item.getDate()}</Text>
-					<Text style={styles.dateText} >{monthNames[date.item.getMonth()]}</Text>
+				<View style={{flexDirection: 'row'}}>
+					<View style={styles.dateContainer} >
+						<Text style={styles.dayText} >{weekday[date.item.getDay()]}</Text>
+						<Text style={styles.dateText} >{date.item.getDate()}</Text>
+						<Text style={styles.dateText} >{monthNames[date.item.getMonth()]}</Text>
+						{/* {sameDay(today, date.item) ?
+							<View style={{ marginLeft: 10, width: 25, backgroundColor: 'blue', borderRadius: 600 }}></View> :
+							null} */}
+					</View>
 				</View>
 				<View style={styles.outerPeopleContainer}>
 					<FlatList
@@ -85,7 +97,7 @@ export default function DayCard({ date, editing, showCreateShift, setDateEditing
 				</View>
 				{editing ? addButtons : null}
 			</View>
-		</View>
+		</View >
 	);
 }
 
@@ -93,7 +105,7 @@ const styles = StyleSheet.create({
 	outerContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		alignItems: 'stretch',
+		// alignItems: 'stretch',
 	},
 	innerContainer: {
 		flex: 1,
@@ -101,7 +113,7 @@ const styles = StyleSheet.create({
 		borderTopWidth: 2,
 		borderColor: 'black',
 		padding: 5,
-		borderRightWidth: (Platform.OS =='web' && !mobileSize)  ? 2 : 0,
+		borderRightWidth: (Platform.OS == 'web' && !mobileSize) ? 2 : 0,
 	},
 	outerPeopleContainer: {
 		marginTop: 10,
@@ -116,15 +128,17 @@ const styles = StyleSheet.create({
 	},
 	dateContainer: {
 		flexDirection: 'row',
+		// justifyContent: 'flex-start',
+		// alignItems: 'flex-start'
 	},
 	dayText: {
-		fontSize: (Platform.OS =='web' && !mobileSize) ? 14 : 18,
+		fontSize: (Platform.OS == 'web' && !mobileSize) ? 14 : 18,
 		marginLeft: 2,
 		color: 'grey',
 		fontFamily: 'CourierPrime'
 	},
 	dateText: {
-		fontSize: (Platform.OS =='web' && !mobileSize)? 14 : 18,
+		fontSize: (Platform.OS == 'web' && !mobileSize) ? 14 : 18,
 		marginLeft: 10,
 		color: 'grey',
 		fontFamily: 'CourierPrime'
