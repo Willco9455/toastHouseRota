@@ -32,12 +32,17 @@ export default function App() {
         await getUsersWeb();
         await getShiftsWeb();
       } else {
+        console.log('started load')
         await getUsers();
+        console.log('loaded users')
         await getShifts();
+        console.log('loaded shifts')
       }
       await loadAdmin();
       setServerLoaded(true);
       setAdmin(getIsAdmin())
+    }else if (!fontsLoaded){
+      console.log('Fonts not loaded')
     }
   }
 
