@@ -11,9 +11,3 @@ This is an application made for [Toast House Ikley](http://www.toasthouse.co.uk/
   <img alt="Dark" src="./screenshots/Screenshot_20240618-122838.png" width="20%">
 </p>
 
-<style>
-  p.imageContaienr {
-    display: flex;
-    justify-content: space-evenly;
-  }
-</style>
